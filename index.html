@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Dessa's Cake | App</title>
+    <title id="app-title">Dessa's Cake | App</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Grand+Hotel&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     
@@ -12,9 +12,10 @@
     
     <style>
         :root {
-            /* Novo Padrão Laranja Moderno (Confeitaria Profissional) */
+            /* Padrão Laranja Moderno (Sobrescrito dinamicamente no JS) */
             --insta-gradient: linear-gradient(135deg, #FF8C00 0%, #FF3D00 100%);
-            --seafoam: #FFB300; /* Amarelo/Laranja quente para destaques */
+            --header-text: #ffffff; /* Cor da letra inteligente baseada na imagem */
+            --seafoam: #FFB300; 
             --text-main: #262626;
             --text-secondary: #8e8e8e;
             --insta-blue: #FF5722;
@@ -56,7 +57,7 @@
         .home-title {
             font-family: 'Grand Hotel', cursive;
             font-size: 56px;
-            color: white;
+            color: var(--header-text);
             margin-bottom: 50px;
             text-shadow: 0 4px 10px rgba(0,0,0,0.1);
             animation: fadeUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -65,7 +66,7 @@
         .btn-home {
             background: white;
             color: #262626;
-            border: none;
+            border: 1px solid rgba(0,0,0,0.05);
             width: 100%;
             max-width: 280px;
             padding: 16px;
@@ -92,7 +93,7 @@
             height: 55px;
             border-radius: 50%;
             background: var(--insta-gradient);
-            color: white;
+            color: var(--header-text);
             border: none;
             display: flex;
             align-items: center;
@@ -115,7 +116,7 @@
             height: 55px;
             border-radius: 50%;
             background: var(--insta-gradient);
-            color: white;
+            color: var(--header-text);
             border: none;
             display: none;
             align-items: center;
@@ -134,16 +135,16 @@
         }
 
         #produtos-screen header {
-            background: var(--insta-gradient); color: white; padding: 20px;
+            background: var(--insta-gradient); color: var(--header-text); padding: 20px;
             display: flex; align-items: center; justify-content: center; position: relative;
             position: sticky; top: 0; z-index: 1000;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        #produtos-screen header h1 { margin: 0; font-size: 1.4rem; letter-spacing: 2px; cursor: pointer; user-select: none; font-weight: 800; }
+        #produtos-screen header h1 { margin: 0; font-size: 1.4rem; letter-spacing: 2px; cursor: pointer; user-select: none; font-weight: 800; color: var(--header-text); }
 
         .header-btn-gear {
-            background: none; border: none; color: white; cursor: pointer;
+            background: none; border: none; color: var(--header-text); cursor: pointer;
             display: none; padding: 5px; transition: transform 0.2s;
             position: absolute; right: 20px;
         }
@@ -186,11 +187,11 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.02);
         }
         .btn-filter.active {
-            background: var(--insta-gradient); color: white; border-color: transparent; box-shadow: 0 4px 10px rgba(255, 140, 0, 0.3);
+            background: var(--insta-gradient); color: var(--header-text); border-color: transparent; box-shadow: 0 4px 10px rgba(255, 140, 0, 0.3);
         }
 
         .floating-total {
-            position: fixed; bottom: 95px; left: 20px; background: var(--insta-gradient); color: white;
+            position: fixed; bottom: 95px; left: 20px; background: var(--insta-gradient); color: var(--header-text);
             padding: 16px 20px; border-radius: 10px; font-weight: 800; font-size: 18px; z-index: 1000;
             box-shadow: 0 8px 20px rgba(255, 140, 0, 0.3); display: none;
         }
@@ -199,7 +200,7 @@
         #admin-panel { display: none; background: #fdfdfd; padding: 25px 20px; border-bottom: 2px solid #eee; }
         .admin-box { background: #fff; border: 1px solid #dbdbdb; border-radius: 8px; padding: 15px; margin-bottom: 20px; }
         .admin-box input, .admin-box textarea, .admin-box select { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #dbdbdb; border-radius: 10px; font-size: 16px; background: #fafafa; font-family: 'Inter', sans-serif;}
-        .btn-postar { background: var(--insta-gradient); color: white; border: none; width: 100%; padding: 16px; border-radius: 30px; font-weight: 700; margin-bottom: 20px; transition: transform 0.2s; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;}
+        .btn-postar { background: var(--insta-gradient); color: var(--header-text); border: none; width: 100%; padding: 16px; border-radius: 30px; font-weight: 700; margin-bottom: 20px; transition: transform 0.2s; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;}
         .btn-postar:active { transform: scale(0.95); }
 
         .comanda-box { background: #fff; border: 1px solid #dbdbdb; border-radius: 8px; margin-bottom: 15px; padding: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
@@ -239,7 +240,7 @@
         }
 
         .footer-order { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 85%; max-width: 320px; z-index: 999; display: flex; flex-direction: column; }
-        .btn-whatsapp-prod { background: var(--insta-gradient); color: white; border: none; width: 100%; padding: 16px; border-radius: 30px; font-weight: 700; box-shadow: 0 8px 20px rgba(255, 61, 0, 0.3); display: flex; justify-content: center; align-items: center; gap: 10px; cursor: pointer; transition: transform 0.2s; letter-spacing: 1px;}
+        .btn-whatsapp-prod { background: var(--insta-gradient); color: var(--header-text); border: none; width: 100%; padding: 16px; border-radius: 30px; font-weight: 700; box-shadow: 0 8px 20px rgba(0,0,0, 0.3); display: flex; justify-content: center; align-items: center; gap: 10px; cursor: pointer; transition: transform 0.2s; letter-spacing: 1px;}
         .btn-whatsapp-prod:active { transform: scale(0.95); }
 
         .insta-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 9999; justify-content: center; align-items: center; }
@@ -301,7 +302,7 @@
         .btn-enc-nav { display: flex; gap: 10px; }
         .btn-back { flex: 1; padding: 14px; text-align: center; color: #8e8e8e; font-weight: 600; font-size: 15px; border-radius: 8px; border: 1px solid #dbdbdb; background: #fafafa; cursor: pointer; transition: 0.2s;}
         .btn-back:active { transform: scale(0.96); }
-        .btn-next { flex: 2; padding: 14px; text-align: center; color: #fff; font-weight: 700; font-size: 15px; border-radius: 8px; border: none; background: var(--insta-gradient); cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(255,140,0,0.3);}
+        .btn-next { flex: 2; padding: 14px; text-align: center; color: var(--header-text); font-weight: 700; font-size: 15px; border-radius: 8px; border: none; background: var(--insta-gradient); cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.15);}
         .btn-next:active { transform: scale(0.96); }
 
         .form-group-enc { margin-bottom: 15px; }
@@ -339,7 +340,7 @@
 </div>
 
 <div id="home-screen">
-    <h1 class="home-title">Dessa's Cake</h1>
+    <h1 class="home-title" id="app-name-home">Dessa's Cake</h1>
     <button class="btn-home" onclick="navTo('produtos')">Delivery</button>
     <button class="btn-home" onclick="navTo('encomendas')">Encomendas</button>
     <button class="btn-home" onclick="window.location.href='https://share.google/V5mK11fYc07tWWEqM'">Avaliação</button>
@@ -347,9 +348,9 @@
 
 <div id="produtos-screen">
     <header>
-        <h1 onclick="handleTitleClick()">DESSA'S CAKE</h1>
+        <h1 onclick="handleTitleClick()" id="app-name-produtos">DESSA'S CAKE</h1>
         <button class="header-btn-gear" id="btn-gear-whats" onclick="abrirWhatsConfig()" title="Configurar WhatsApp">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
         </button>
     </header>
 
@@ -448,23 +449,14 @@
             </select>
             <label style="font-size:12px; font-weight:bold; color:#555;">Fotos do Produto</label>
             <input type="file" id="new-img" accept="image/*" multiple>
-            <button class="btn-postar" id="btn-save" onclick="addItem()">PUBLICAR AGORA</button>
+            <button class="btn-postar" id="btn-save" onclick="addItem()" style="color: var(--header-text);">PUBLICAR AGORA</button>
         </div>
 
         <div class="admin-box">
             <h3 style="margin-bottom: 15px; font-size: 16px; color: #4CAF50;">🎂 Configurações de Encomendas</h3>
-            <label style="font-size:12px; font-weight:bold; color:#555;">Custos Fixos e Variáveis</label>
-            <div style="display:flex; gap:10px; margin-bottom:10px;">
-                <input type="number" id="cfg-taxa-hora" placeholder="R$ Valor da sua Hora (ex: 20)">
+            <label style="font-size:12px; font-weight:bold; color:#555;">Custos e Margens</label>
+            <div style="display:flex; gap:10px; margin-bottom:15px;">
                 <input type="number" id="cfg-margem-pct" placeholder="% Custos não calculáveis (ex: 30)">
-            </div>
-            
-            <label style="font-size:12px; font-weight:bold; color:#555;">Horas necessárias por Kg (Ex: 1kg = 0.5h)</label>
-            <div style="display:flex; gap:5px; margin-bottom:15px;">
-                <input type="number" step="0.1" id="cfg-tempo-1" placeholder="1Kg (hrs)">
-                <input type="number" step="0.1" id="cfg-tempo-2" placeholder="2Kg (hrs)">
-                <input type="number" step="0.1" id="cfg-tempo-3" placeholder="3Kg (hrs)">
-                <input type="number" step="0.1" id="cfg-tempo-4" placeholder="4Kg (hrs)">
             </div>
             
             <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
@@ -482,7 +474,8 @@
                 <input type="number" id="cfg-ing-p3" placeholder="R$ 3Kg">
                 <input type="number" id="cfg-ing-p4" placeholder="R$ 4Kg">
             </div>
-            <button class="btn-postar" style="background:#4CAF50; padding:10px;" onclick="addIngredienteEnc()">SALVAR INGREDIENTE</button>
+            <button type="button" onclick="autoPreencherIngredientes()" style="background:#eee; color:#333; border:none; padding:8px; border-radius:5px; font-size:12px; font-weight:bold; cursor:pointer; margin-bottom: 10px; width: 100%;">🪄 Auto-preencher x2, x3 e x4 (Baseado no 1Kg)</button>
+            <button class="btn-postar" style="background:#4CAF50; color: white; padding:10px;" onclick="addIngredienteEnc()">SALVAR</button>
             
             <div id="admin-ing-list" style="margin-top:15px; max-height:200px; overflow-y:auto; border:1px solid #eee; padding:10px; border-radius:8px;">
                 </div>
@@ -491,11 +484,13 @@
             <label style="font-size:12px; font-weight:bold; color:#555;">Datas Bloqueadas (Reservadas)</label>
             <div id="admin-datas-bloqueadas" style="display:flex; flex-wrap:wrap; gap:5px; margin-top:10px;"></div>
 
-            <button class="btn-postar" onclick="salvarConfigEncomendaGeral()" style="background: #333; margin-top:20px;">SALVAR CONFIG GERAIS (HORA/%)</button>
+            <button class="btn-postar" onclick="salvarConfigEncomendaGeral()" style="background: #333; color: white; margin-top:20px;">SALVAR CONFIG GERAIS (%)</button>
         </div>
 
         <div class="admin-box">
             <h3 style="margin-bottom: 15px; font-size: 16px; color: var(--insta-blue);">⚙️ Configurações da Loja</h3>
+            <label style="font-size:12px; font-weight:bold; color:#555;">Nome do App/Loja</label>
+            <input type="text" id="cfg-nome-loja" placeholder="Ex: Dessa's Cake" style="margin-bottom: 15px;">
             <label style="font-size:12px; font-weight:bold; color:#555;">Dias de Funcionamento</label>
             <div style="display:flex; gap:10px; margin-bottom:15px; flex-wrap:wrap;">
                 <label><input type="checkbox" id="dia-0" value="0"> Dom</label>
@@ -506,7 +501,7 @@
                 <label><input type="checkbox" id="dia-5" value="5"> Sex</label>
                 <label><input type="checkbox" id="dia-6" value="6"> Sáb</label>
             </div>
-            <label style="font-size:12px; font-weight:bold; color:#555;">Foto de Capa & Perfil</label>
+            <label style="font-size:12px; font-weight:bold; color:#555;">Foto de Capa & Perfil (Define a Cor do App)</label>
             <input type="file" id="cfg-cover" accept="image/*" title="Capa">
             <input type="file" id="cfg-profile" accept="image/*" title="Perfil">
             <label style="font-size:12px; font-weight:bold; color:#555;">Horário (Abre/Fecha)</label>
@@ -514,7 +509,7 @@
                 <input type="text" id="cfg-open" style="margin-bottom:0;" placeholder="00:00" oninput="maskHora(this)" maxlength="5">
                 <input type="text" id="cfg-close" style="margin-bottom:0;" placeholder="00:00" oninput="maskHora(this)" maxlength="5">
             </div>
-            <button class="btn-postar" id="btn-save-cfg" onclick="salvarConfigLoja()" style="background: #333;">SALVAR LOJA</button>
+            <button class="btn-postar" id="btn-save-cfg" onclick="salvarConfigLoja()" style="background: #333; color: white;">SALVAR LOJA</button>
             <button class="btn-insta-link" onclick="location.reload()" style="margin-top: 10px; color: #8e8e8e;">Sair do Painel</button>
         </div>
     </section>
@@ -525,7 +520,7 @@
     </div>
 
     <button class="btn-comandas-float" id="btn-admin-comandas" onclick="document.getElementById('comandas-overlay').style.display='flex'" title="Ver Comandas">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
     </button>
     <button class="btn-voltar-float" onclick="navTo('home')" title="Voltar para Início">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
@@ -534,7 +529,7 @@
 
 <div id="encomendas-screen">
     <div class="app-container">
-        <header class="header-enc"><h1>Dessa's Cake</h1></header>
+        <header class="header-enc"><h1 id="app-name-encomendas">Dessa's Cake</h1></header>
 
         <div class="stepper-container" id="enc-stepper">
             <div class="stepper-step active" id="st-peso" onclick="irParaEtapa('peso')">
@@ -725,6 +720,53 @@
         });
     }
 
+    // Extrator de Cor Dinâmico (Luminosidade e RGB)
+    function getAverageRGB(imgEl) {
+        let blockSize = 5, defaultRGB = {r:255,g:140,b:0}, canvas = document.createElement('canvas'), context = canvas.getContext && canvas.getContext('2d'), data, width, height, i = -4, length, rgb = {r:0,g:0,b:0}, count = 0;
+        if (!context) return defaultRGB;
+        height = canvas.height = imgEl.naturalHeight || imgEl.offsetHeight || imgEl.height;
+        width = canvas.width = imgEl.naturalWidth || imgEl.offsetWidth || imgEl.width;
+        context.drawImage(imgEl, 0, 0);
+        try { data = context.getImageData(0, 0, width, height); } catch(e) { return defaultRGB; }
+        length = data.data.length;
+        while ( (i += blockSize * 4) < length ) {
+            ++count; rgb.r += data.data[i]; rgb.g += data.data[i+1]; rgb.b += data.data[i+2];
+        }
+        rgb.r = ~~(rgb.r/count); rgb.g = ~~(rgb.g/count); rgb.b = ~~(rgb.b/count);
+        return rgb;
+    }
+
+    function updateThemeColors(coverSrc, profileSrc) {
+        if (!coverSrc && !profileSrc) {
+            document.documentElement.style.setProperty('--insta-gradient', 'linear-gradient(135deg, #FF8C00 0%, #FF3D00 100%)');
+            document.documentElement.style.setProperty('--header-text', '#ffffff');
+            return;
+        }
+        
+        const imgCov = new Image(), imgProf = new Image();
+        imgCov.crossOrigin = "Anonymous"; imgProf.crossOrigin = "Anonymous";
+        
+        let covColor = {r:255,g:140,b:0}, profColor = {r:255,g:61,b:0};
+        let loaded = 0;
+        
+        function applyTheme() {
+            const grad = `linear-gradient(135deg, rgb(${covColor.r},${covColor.g},${covColor.b}) 0%, rgb(${profColor.r},${profColor.g},${profColor.b}) 100%)`;
+            document.documentElement.style.setProperty('--insta-gradient', grad);
+            
+            const avgLuma = 0.2126 * ((covColor.r + profColor.r)/2) + 0.7152 * ((covColor.g + profColor.g)/2) + 0.0722 * ((covColor.b + profColor.b)/2);
+            document.documentElement.style.setProperty('--header-text', avgLuma > 150 ? '#262626' : '#ffffff');
+        }
+
+        if(coverSrc) {
+            imgCov.onload = () => { covColor = getAverageRGB(imgCov); loaded++; if(loaded===2 || (!profileSrc && loaded===1)) applyTheme(); };
+            imgCov.src = coverSrc;
+        }
+        if(profileSrc) {
+            imgProf.onload = () => { profColor = getAverageRGB(imgProf); loaded++; if(loaded===2 || (!coverSrc && loaded===1)) applyTheme(); };
+            imgProf.src = profileSrc;
+        }
+    }
+
     // Modais e WhatsApp Local
     function showInstaModal(title, text, icon, type = 'ok', onConfirm = null) {
         document.getElementById('insta-modal-title').innerText = title;
@@ -761,14 +803,28 @@
     function checkAdminPass() {
         if (document.getElementById('admin-pass').value === "1709") {
             isAdmin = true; document.getElementById('admin-panel').style.display = 'block'; document.getElementById('btn-admin-comandas').style.display = 'flex'; closeOverlay('login-overlay'); renderMenu(); showInstaModal('Bem-vinda!', 'Modo administrador ativado.', '👩‍🍳');
+            if(storeConfig.nomeLoja) document.getElementById('cfg-nome-loja').value = storeConfig.nomeLoja;
         } else showInstaModal('Erro', 'Senha incorreta.', '❌');
     }
 
     db.ref('config').on('value', (snap) => {
         if(snap.val()) {
             storeConfig = snap.val();
+            
+            // App Name Dinâmico
+            const nomeExibicao = storeConfig.nomeLoja || "Dessa's Cake";
+            document.getElementById('app-title').innerText = nomeExibicao + " | App";
+            document.getElementById('app-name-home').innerText = nomeExibicao;
+            document.getElementById('app-name-produtos').innerText = nomeExibicao.toUpperCase();
+            document.getElementById('app-name-encomendas').innerText = nomeExibicao;
+            if(isAdmin) document.getElementById('cfg-nome-loja').value = storeConfig.nomeLoja || '';
+
             if(storeConfig.cover) { document.getElementById('display-cover').src = storeConfig.cover; document.getElementById('display-cover').style.display = 'block'; }
             if(storeConfig.profile) { document.getElementById('display-profile').src = storeConfig.profile; document.getElementById('display-profile').style.display = 'block'; }
+            
+            // Chama a atualização de tema assim que carrega
+            updateThemeColors(storeConfig.cover, storeConfig.profile);
+
             if(storeConfig.open) document.getElementById('cfg-open').value = storeConfig.open;
             if(storeConfig.close) document.getElementById('cfg-close').value = storeConfig.close;
             if(storeConfig.dias) { for(let i=0; i<=6; i++) { const ck = document.getElementById('dia-'+i); if(ck) ck.checked = storeConfig.dias.includes(i); } }
@@ -801,6 +857,8 @@
 
     async function salvarConfigLoja() {
         const payload = {}, coverF = document.getElementById('cfg-cover').files[0], profF = document.getElementById('cfg-profile').files[0];
+        const nomeL = document.getElementById('cfg-nome-loja').value;
+        if(nomeL) payload.nomeLoja = nomeL;
         if(document.getElementById('cfg-open').value) payload.open = document.getElementById('cfg-open').value;
         if(document.getElementById('cfg-close').value) payload.close = document.getElementById('cfg-close').value;
         payload.dias = [0,1,2,3,4,5,6].filter(i => document.getElementById('dia-'+i).checked);
@@ -886,8 +944,7 @@
     // ================= NOVA LÓGICA DE ENCOMENDAS (CLIENTE & ADMIN) =================
     
     let encConfig = {
-        taxaHora: 0, margemPct: 0,
-        tempos: {"1": 0, "2": 0, "3": 0, "4": 0},
+        margemPct: 0,
         ingredientes: { massa: {}, recheio: {}, cobertura: {}, adicional: {} },
         datasBloqueadas: {}
     };
@@ -900,14 +957,11 @@
     db.ref('config_encomendas').on('value', snap => {
         if(snap.val()) encConfig = snap.val();
         if(!encConfig.ingredientes) encConfig.ingredientes = { massa:{}, recheio:{}, cobertura:{}, adicional:{} };
-        if(!encConfig.tempos) encConfig.tempos = {"1": 0.5, "2": 1, "3": 1.5, "4": 2};
         if(!encConfig.datasBloqueadas) encConfig.datasBloqueadas = {};
         
         // Atualizar painel admin se aberto
         if(isAdmin) {
-            document.getElementById('cfg-taxa-hora').value = encConfig.taxaHora || '';
             document.getElementById('cfg-margem-pct').value = encConfig.margemPct || '';
-            for(let i=1; i<=4; i++) document.getElementById('cfg-tempo-'+i).value = encConfig.tempos[String(i)] || '';
             renderTabelaIngredientesAdmin();
             renderDatasBloqueadasAdmin();
         }
@@ -936,14 +990,21 @@
     }
 
     function salvarConfigEncomendaGeral() {
-        const hr = parseFloat(document.getElementById('cfg-taxa-hora').value) || 0;
         const pct = parseFloat(document.getElementById('cfg-margem-pct').value) || 0;
-        const t1 = parseFloat(document.getElementById('cfg-tempo-1').value) || 0;
-        const t2 = parseFloat(document.getElementById('cfg-tempo-2').value) || 0;
-        const t3 = parseFloat(document.getElementById('cfg-tempo-3').value) || 0;
-        const t4 = parseFloat(document.getElementById('cfg-tempo-4').value) || 0;
-        db.ref('config_encomendas').update({ taxaHora: hr, margemPct: pct, tempos: {"1":t1,"2":t2,"3":t3,"4":t4} })
-          .then(() => showInstaModal('Sucesso', 'Valores de hora e margem salvos.', '✅'));
+        db.ref('config_encomendas').update({ margemPct: pct })
+          .then(() => showInstaModal('Sucesso', 'Margem extra salva com sucesso.', '✅'));
+    }
+
+    // Função "Varinha Mágica" para auto-preencher os preços dos quilos adicionais
+    function autoPreencherIngredientes() {
+        const p1 = parseFloat(document.getElementById('cfg-ing-p1').value);
+        if(p1 && !isNaN(p1)) {
+            document.getElementById('cfg-ing-p2').value = (p1 * 2).toFixed(2);
+            document.getElementById('cfg-ing-p3').value = (p1 * 3).toFixed(2);
+            document.getElementById('cfg-ing-p4').value = (p1 * 4).toFixed(2);
+        } else {
+            showInstaModal('Aviso', 'Preencha o valor de 1Kg primeiro!', '⚠️');
+        }
     }
 
     function addIngredienteEnc() {
@@ -1078,9 +1139,11 @@
         if(currentStepIdx === stepsEnc.length - 1) {
             btnNext.innerText = 'CONCLUIR PEDIDO';
             btnNext.style.background = '#4CAF50';
+            btnNext.style.color = '#ffffff';
         } else {
             btnNext.innerText = 'Avançar';
             btnNext.style.background = 'var(--insta-gradient)';
+            btnNext.style.color = 'var(--header-text)';
         }
 
         if(currentStepIdx === 1 && !encData.massa) renderOpcoesDinamicas(); // Inicializa renders se precisar
@@ -1098,11 +1161,7 @@
         if(encData.cobertura && encData.cobertura !== 'Nenhum' && encConfig.ingredientes.cobertura[encData.cobertura]) totalIng += parseFloat(encConfig.ingredientes.cobertura[encData.cobertura][p]) || 0;
         if(encData.adicional && encData.adicional !== 'Nenhum' && encConfig.ingredientes.adicional[encData.adicional]) totalIng += parseFloat(encConfig.ingredientes.adicional[encData.adicional][p]) || 0;
 
-        // Soma Horas
-        let horas = parseFloat(encConfig.tempos[p]) || 0;
-        let custoHora = horas * (parseFloat(encConfig.taxaHora) || 0);
-
-        let subtotal = totalIng + custoHora;
+        let subtotal = totalIng; // Sem custo de hora
         
         // % Gastos Extras
         let taxaExtra = subtotal * ((parseFloat(encConfig.margemPct) || 0) / 100);
@@ -1145,7 +1204,9 @@
         const partesData = d.split('-');
         const dataFormatada = `${partesData[2]}/${partesData[1]}/${partesData[0]}`;
 
-        let msg = `*Encomenda ${cId}*\n🎂 *Dessa's Cake*\n\n`;
+        const nomeLoja = document.getElementById('app-name-home').innerText;
+
+        let msg = `*Encomenda ${cId}*\n🎂 *${nomeLoja}*\n\n`;
         msg += `*👤 CLIENTE:*\nNome: ${n}\nTipo: ${t}\n`;
         if(t === 'Entrega') msg += `Endereço: ${e}\n`;
         msg += `Agendado: ${dataFormatada} às ${h}\n\n`;
