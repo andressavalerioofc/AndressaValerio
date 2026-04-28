@@ -14,7 +14,7 @@
         :root {
             /* Padrão Laranja Moderno (Sobrescrito dinamicamente no JS) */
             --insta-gradient: linear-gradient(135deg, #FF8C00 0%, #FF3D00 100%);
-            --header-text: #ffffff; /* Cor da letra inteligente baseada na imagem */
+            --header-text: #ffffff; 
             --seafoam: #FFB300; 
             --text-main: #262626;
             --text-secondary: #8e8e8e;
@@ -43,158 +43,68 @@
             100% { transform: scale(1); opacity: 1; } 
         }
 
+        /* Spinner de Carregamento Moderno */
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* ================= TELA DE LOADING ================= */
+        #loading-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--insta-gradient); z-index: 999999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            color: white; transition: opacity 0.5s ease-out;
+        }
+        .spinner {
+            width: 50px; height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #ffffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        .loading-text { font-family: 'Grand Hotel', cursive; font-size: 36px; letter-spacing: 2px; }
+
         /* ================= TELA INICIAL ================= */
-        #home-screen {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            background: var(--insta-gradient);
-            padding: 20px;
-        }
+        #home-screen { display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background: var(--insta-gradient); padding: 20px; }
 
-        .home-title {
-            font-family: 'Grand Hotel', cursive;
-            font-size: 56px;
-            color: var(--header-text);
-            margin-bottom: 50px;
-            text-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            animation: fadeUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
+        .home-title { font-family: 'Grand Hotel', cursive; font-size: 56px; color: var(--header-text); margin-bottom: 50px; text-shadow: 0 4px 10px rgba(0,0,0,0.1); animation: fadeUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
-        .btn-home {
-            background: white;
-            color: #262626;
-            border: 1px solid rgba(0,0,0,0.05);
-            width: 100%;
-            max-width: 280px;
-            padding: 16px;
-            border-radius: 30px;
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 15px;
-            cursor: pointer;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            animation: fadeUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
-        }
+        .btn-home { background: white; color: #262626; border: 1px solid rgba(0,0,0,0.05); width: 100%; max-width: 280px; padding: 16px; border-radius: 30px; font-size: 16px; font-weight: 700; margin-bottom: 15px; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.15); transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); animation: fadeUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both; }
         .btn-home:nth-child(2) { animation-delay: 0.1s; }
         .btn-home:nth-child(3) { animation-delay: 0.2s; }
         .btn-home:nth-child(4) { animation-delay: 0.3s; }
         .btn-home:active { transform: scale(0.92); }
 
         /* ================= BOTÕES FLUTUANTES ================= */
-        .btn-voltar-float {
-            position: fixed;
-            bottom: 95px; 
-            right: 20px;
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            background: var(--insta-gradient);
-            color: var(--header-text);
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.25);
-            cursor: pointer;
-            z-index: 9999;
-            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s;
-        }
-        .btn-voltar-float:active {
-            transform: scale(0.85);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
+        .btn-voltar-float { position: fixed; bottom: 95px; right: 20px; width: 55px; height: 55px; border-radius: 50%; background: var(--insta-gradient); color: var(--header-text); border: none; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 15px rgba(0,0,0,0.25); cursor: pointer; z-index: 9999; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s; }
+        .btn-voltar-float:active { transform: scale(0.85); box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
 
-        .btn-comandas-float {
-            position: fixed;
-            bottom: 165px; 
-            right: 20px;
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            background: var(--insta-gradient);
-            color: var(--header-text);
-            border: none;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.25);
-            cursor: pointer;
-            z-index: 9999;
-            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s;
-        }
+        .btn-comandas-float { position: fixed; bottom: 165px; right: 20px; width: 55px; height: 55px; border-radius: 50%; background: var(--insta-gradient); color: var(--header-text); border: none; display: none; align-items: center; justify-content: center; box-shadow: 0 6px 15px rgba(0,0,0,0.25); cursor: pointer; z-index: 9999; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s; }
         .btn-comandas-float:active { transform: scale(0.85); box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
 
         /* ================= TELA DELIVERY ================= */
-        #produtos-screen {
-            display: none;
-            padding-bottom: 130px;
-        }
+        #produtos-screen { display: none; padding-bottom: 130px; }
 
-        #produtos-screen header {
-            background: var(--insta-gradient); color: var(--header-text); padding: 20px;
-            display: flex; align-items: center; justify-content: center; position: relative;
-            position: sticky; top: 0; z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
+        header { background: var(--insta-gradient); color: var(--header-text); padding: 20px; display: flex; align-items: center; justify-content: center; position: relative; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        header h1 { margin: 0; font-size: 1.4rem; letter-spacing: 2px; cursor: pointer; user-select: none; font-weight: 800; color: var(--header-text); }
 
-        #produtos-screen header h1 { margin: 0; font-size: 1.4rem; letter-spacing: 2px; cursor: pointer; user-select: none; font-weight: 800; color: var(--header-text); }
-
-        .header-btn-gear {
-            background: none; border: none; color: var(--header-text); cursor: pointer;
-            display: none; padding: 5px; transition: transform 0.2s;
-            position: absolute; right: 20px;
-        }
+        .header-btn-gear { background: none; border: none; color: var(--header-text); cursor: pointer; display: none; padding: 5px; transition: transform 0.2s; position: absolute; right: 20px; }
         .header-btn-gear:active { transform: scale(0.85); }
 
-        .loja-header {
-            position: relative;
-            background: #fff;
-            padding-bottom: 50px;
-            margin-bottom: 40px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        .cover-photo {
-            width: 100%; height: 180px;
-            background: #eee url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="none"><rect width="100%" height="100%" fill="%23f0f0f0"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="14" fill="%23ccc">Sem Capa</text></svg>') center/cover;
-            position: relative;
-        }
+        .loja-header { position: relative; background: #fff; padding-bottom: 50px; margin-bottom: 40px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .cover-photo { width: 100%; height: 180px; background: #eee url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="none"><rect width="100%" height="100%" fill="%23f0f0f0"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="14" fill="%23ccc">Sem Capa</text></svg>') center/cover; position: relative; }
         .cover-photo img { width: 100%; height: 100%; object-fit: cover; display: none; }
-        .profile-photo {
-            width: 100px; height: 100px; border-radius: 50%; border: 4px solid #fff;
-            position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);
-            background: #fff; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.15); z-index: 2;
-        }
+        .profile-photo { width: 100px; height: 100px; border-radius: 50%; border: 4px solid #fff; position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); background: #fff; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.15); z-index: 2; }
         .profile-photo img { width: 100%; height: 100%; object-fit: cover; display: none; }
-        .status-loja {
-            position: absolute; top: 15px; right: 15px; padding: 6px 16px; border-radius: 20px;
-            color: white; font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;
-            z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
+        .status-loja { position: absolute; top: 15px; right: 15px; padding: 6px 16px; border-radius: 20px; color: white; font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; z-index: 10; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
         .status-aberto { background: #4CAF50; }
         .status-fechado { background: #F44336; }
 
-        .filters-container {
-            display: flex; overflow-x: auto; gap: 12px; padding: 10px 20px; background: #fcfcfc; scrollbar-width: none;
-        }
+        .filters-container { display: flex; overflow-x: auto; gap: 12px; padding: 10px 20px; background: #fcfcfc; scrollbar-width: none; }
         .filters-container::-webkit-scrollbar { display: none; }
-        .btn-filter {
-            background: #fff; color: #555; border: 2px solid #eee; padding: 8px 18px; border-radius: 25px;
-            font-weight: 700; font-size: 14px; white-space: nowrap; cursor: pointer; transition: all 0.3s ease;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-        }
-        .btn-filter.active {
-            background: var(--insta-gradient); color: var(--header-text); border-color: transparent; box-shadow: 0 4px 10px rgba(255, 140, 0, 0.3);
-        }
+        .btn-filter { background: #fff; color: #555; border: 2px solid #eee; padding: 8px 18px; border-radius: 25px; font-weight: 700; font-size: 14px; white-space: nowrap; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .btn-filter.active { background: var(--insta-gradient); color: var(--header-text); border-color: transparent; box-shadow: 0 4px 10px rgba(255, 140, 0, 0.3); }
 
-        .floating-total {
-            position: fixed; bottom: 95px; left: 20px; background: var(--insta-gradient); color: var(--header-text);
-            padding: 16px 20px; border-radius: 10px; font-weight: 800; font-size: 18px; z-index: 1000;
-            box-shadow: 0 8px 20px rgba(255, 140, 0, 0.3); display: none;
-        }
+        .floating-total { position: fixed; bottom: 95px; left: 20px; background: var(--insta-gradient); color: var(--header-text); padding: 16px 20px; border-radius: 10px; font-weight: 800; font-size: 18px; z-index: 1000; box-shadow: 0 8px 20px rgba(255, 140, 0, 0.3); display: none; }
         .pop-anim { animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
         #admin-panel { display: none; background: #fdfdfd; padding: 25px 20px; border-bottom: 2px solid #eee; }
@@ -203,10 +113,22 @@
         .btn-postar { background: var(--insta-gradient); color: var(--header-text); border: none; width: 100%; padding: 16px; border-radius: 30px; font-weight: 700; margin-bottom: 20px; transition: transform 0.2s; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;}
         .btn-postar:active { transform: scale(0.95); }
 
-        .comanda-box { background: #fff; border: 1px solid #dbdbdb; border-radius: 8px; margin-bottom: 15px; padding: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
-        .comanda-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px; cursor: pointer;}
+        .comanda-box { background: #fff; border: 1px solid #dbdbdb; border-radius: 8px; margin-bottom: 15px; padding: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); position: relative; }
+        .comanda-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; cursor: pointer;}
         .comanda-item { display: flex; justify-content: space-between; align-items: center; background: #fafafa; padding: 8px; border-radius: 6px; margin-bottom: 5px; font-size: 14px;}
         .btn-comanda-acao { border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; margin-left: 5px; color: white;}
+
+        /* CSS para o Calendário de Comandas */
+        .calendar-header { display: flex; justify-content: space-between; margin-bottom: 15px; align-items: center; }
+        .calendar-header select { padding: 8px; border-radius: 8px; border: 1px solid #dbdbdb; font-family: 'Inter'; font-weight: bold; font-size: 14px; outline: none;}
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-bottom: 15px; }
+        .cal-day-header { text-align: center; font-weight: bold; font-size: 12px; color: #8e8e8e; margin-bottom: 5px; }
+        .cal-day { border: 1px solid #eee; border-radius: 8px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 14px; cursor: pointer; position: relative; background: #fff; transition: 0.2s;}
+        .cal-day:hover { background: #fafafa; border-color: #dbdbdb; }
+        .cal-day.has-order { background: #ebffeb; border-color: #4CAF50; color: #4CAF50; font-weight: bold; }
+        .cal-day.blocked { background: #ffebeb; border-color: #ed4956; color: #ed4956; font-weight: bold; }
+        .cal-order-count { position: absolute; top: -6px; right: -6px; background: var(--insta-blue); color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+        .cal-day.empty { border: none; background: transparent; cursor: default; }
 
         .cardapio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px; max-width: 600px; margin: 0 auto; }
         .card { background: white; border-radius: 15px; border: 2px solid #efefef; position: relative; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; box-shadow: 0 2px 8px rgba(0,0,0,0.04);}
@@ -232,12 +154,7 @@
         .btn-action.add { color: var(--insta-blue); border-color: var(--insta-blue); }
         .btn-action.minus { color: #ed4956; border-color: #ed4956; }
 
-        .qty-bubble {
-            position: absolute; top: 10px; left: 10px; background: var(--seafoam); color: black; 
-            width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; 
-            z-index: 6; font-size: 18px; font-weight: 900; box-shadow: 0 0 15px var(--seafoam), 0 4px 10px rgba(0,0,0,0.3); 
-            animation: popIn 0.3s; border: 2px solid white;
-        }
+        .qty-bubble { position: absolute; top: 10px; left: 10px; background: var(--seafoam); color: black; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 6; font-size: 18px; font-weight: 900; box-shadow: 0 0 15px var(--seafoam), 0 4px 10px rgba(0,0,0,0.3); animation: popIn 0.3s; border: 2px solid white; }
 
         .footer-order { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 85%; max-width: 320px; z-index: 999; display: flex; flex-direction: column; }
         .btn-whatsapp-prod { background: var(--insta-gradient); color: var(--header-text); border: none; width: 100%; padding: 16px; border-radius: 30px; font-weight: 700; box-shadow: 0 8px 20px rgba(0,0,0, 0.3); display: flex; justify-content: center; align-items: center; gap: 10px; cursor: pointer; transition: transform 0.2s; letter-spacing: 1px;}
@@ -255,15 +172,17 @@
 
         #img-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; flex-direction: column; justify-content: center; align-items: center; }
         .modal-close { position: absolute; top: 20px; right: 20px; color: white; font-size: 32px; font-weight: bold; cursor: pointer; z-index: 2001; }
-        .slider-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; width: 100%; max-width: 500px; scrollbar-width: none; align-items: center; }
+        .slider-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; width: 100%; max-width: 500px; scrollbar-width: none; align-items: center; justify-content: center;}
         .slider-container::-webkit-scrollbar { display: none; }
-        .slider-container img { flex: 0 0 100%; scroll-snap-align: center; object-fit: cover; aspect-ratio: 1/1; width: 100%; max-height: 80vh; border-radius: 10px; padding: 0 10px; }
+        .slider-container img { flex: 0 0 100%; scroll-snap-align: center; max-height: 85vh; border-radius: 10px; padding: 0 10px; object-fit: contain; }
+        .slider-container embed { flex: 0 0 100%; max-height: 85vh; border-radius: 10px; }
 
         /* ================= TELA ENCOMENDAS (REFORMULADA) ================= */
         #encomendas-screen { display: none; background-color: #fafafa; min-height: 100vh; }
         .app-container { width: 100%; max-width: 414px; background-color: #ffffff; min-height: 100vh; box-shadow: 0 0 20px rgba(0,0,0,0.1); position: relative; padding-bottom: 160px; margin: 0 auto;}
-        .header-enc { display: flex; align-items: center; justify-content: center; height: 60px; border-bottom: 1px solid #dbdbdb; background-color: #ffffff; position: sticky; top: 0; z-index: 10; }
-        .header-enc h1 { font-family: 'Grand Hotel', cursive; font-size: 32px; font-weight: 400; letter-spacing: 1px; color: #262626; }
+        
+        .header-enc { display: flex; align-items: center; justify-content: center; height: 60px; background: var(--insta-gradient); position: sticky; top: 0; z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.1);}
+        .header-enc h1 { font-family: 'Grand Hotel', cursive; font-size: 32px; font-weight: 400; letter-spacing: 1px; color: var(--header-text); cursor: pointer; user-select: none; }
         
         /* Stepper - Timeline Horizontal */
         .stepper-container { display: flex; overflow-x: auto; padding: 15px 20px; background: #fff; border-bottom: 1px solid #efefef; scrollbar-width: none; white-space: nowrap; gap: 20px; align-items: center;}
@@ -273,8 +192,8 @@
         .stepper-step .label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;}
         .stepper-step.completed { color: var(--insta-blue); }
         .stepper-step.completed .circle { border-color: var(--insta-blue); background: var(--insta-blue); color: #fff; }
-        .stepper-step.active { color: #FF8C00; }
-        .stepper-step.active .circle { border-color: #FF8C00; border-width: 3px; transform: scale(1.1); color: #FF8C00;}
+        .stepper-step.active { color: var(--insta-blue); }
+        .stepper-step.active .circle { border-color: var(--insta-blue); border-width: 3px; transform: scale(1.1); color: var(--insta-blue);}
         .stepper-line { position: absolute; top: 12px; left: 50%; width: 100%; height: 2px; background: #ccc; z-index: 1; transition: 0.3s; }
         .stepper-step.completed .stepper-line { background: var(--insta-blue); }
 
@@ -324,6 +243,11 @@
     </style>
 </head>
 <body>
+
+<div id="loading-screen">
+    <div class="spinner"></div>
+    <div class="loading-text" id="loading-text-dyn">Dessa's Cake</div>
+</div>
 
 <div id="insta-modal-overlay" class="insta-overlay">
     <div class="insta-popup">
@@ -424,7 +348,7 @@
                 <div onclick="closeOverlay('comandas-overlay')" style="cursor: pointer; font-size: 1.2rem; font-weight: bold; color: #8e8e8e;">✕</div>
             </div>
             <div id="popup-comandas-list" style="text-align: left; overflow-y: auto; flex-grow: 1;">
-                Carregando comandas...
+                Carregando calendário...
             </div>
         </div>
     </div>
@@ -475,10 +399,9 @@
                 <input type="number" id="cfg-ing-p4" placeholder="R$ 4Kg">
             </div>
             <button type="button" onclick="autoPreencherIngredientes()" style="background:#eee; color:#333; border:none; padding:8px; border-radius:5px; font-size:12px; font-weight:bold; cursor:pointer; margin-bottom: 10px; width: 100%;">🪄 Auto-preencher x2, x3 e x4 (Baseado no 1Kg)</button>
-            <button class="btn-postar" style="background:#4CAF50; color: white; padding:10px;" onclick="addIngredienteEnc()">SALVAR</button>
+            <button class="btn-postar" id="btn-salvar-ing" style="background:#4CAF50; color: white; padding:10px;" onclick="addIngredienteEnc()">SALVAR</button>
             
-            <div id="admin-ing-list" style="margin-top:15px; max-height:200px; overflow-y:auto; border:1px solid #eee; padding:10px; border-radius:8px;">
-                </div>
+            <div id="admin-ing-list" style="margin-top:15px; max-height:200px; overflow-y:auto; border:1px solid #eee; padding:10px; border-radius:8px;"></div>
 
             <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
             <label style="font-size:12px; font-weight:bold; color:#555;">Datas Bloqueadas (Reservadas)</label>
@@ -519,7 +442,7 @@
         <button class="btn-whatsapp-prod" onclick="abrirCheckoutProdutos()"><span>✓</span> FINALIZAR PEDIDO</button>
     </div>
 
-    <button class="btn-comandas-float" id="btn-admin-comandas" onclick="document.getElementById('comandas-overlay').style.display='flex'" title="Ver Comandas">
+    <button class="btn-comandas-float" id="btn-admin-comandas" onclick="abrirComandasModal()" title="Ver Comandas">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
     </button>
     <button class="btn-voltar-float" onclick="navTo('home')" title="Voltar para Início">
@@ -529,7 +452,17 @@
 
 <div id="encomendas-screen">
     <div class="app-container">
-        <header class="header-enc"><h1 id="app-name-encomendas">Dessa's Cake</h1></header>
+        <header class="header-enc">
+            <h1 id="app-name-encomendas" onclick="handleTitleClick()">Dessa's Cake</h1>
+            <button class="header-btn-gear" id="btn-gear-whats-enc" onclick="abrirWhatsConfig()" title="Configurar WhatsApp" style="display: none;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            </button>
+        </header>
+
+        <div class="loja-header" id="loja-header-enc">
+            <div class="cover-photo"><img id="display-cover-enc" src=""><div id="status-loja-badge-enc" class="status-loja status-aberto">Aberto</div></div>
+            <div class="profile-photo"><img id="display-profile-enc" src=""></div>
+        </div>
 
         <div class="stepper-container" id="enc-stepper">
             <div class="stepper-step active" id="st-peso" onclick="irParaEtapa('peso')">
@@ -542,10 +475,10 @@
                 <div class="stepper-line"></div><div class="circle">3</div><div class="label">Recheio</div>
             </div>
             <div class="stepper-step" id="st-cobertura" onclick="irParaEtapa('cobertura')">
-                <div class="stepper-line"></div><div class="circle">4</div><div class="label">Cobertura</div>
+                <div class="stepper-line"></div><div class="circle">4</div><div class="label">Cob</div>
             </div>
             <div class="stepper-step" id="st-adicional" onclick="irParaEtapa('adicional')">
-                <div class="stepper-line"></div><div class="circle">5</div><div class="label">Adicional</div>
+                <div class="stepper-line"></div><div class="circle">5</div><div class="label">Adic</div>
             </div>
             <div class="stepper-step" id="st-dados" onclick="irParaEtapa('dados')">
                 <div class="stepper-line"></div><div class="circle">6</div><div class="label">Dados</div>
@@ -643,7 +576,7 @@
                 </div>
 
                 <div class="comprovante-box" id="box-comprovante">
-                    <input type="file" id="enc_comprovante" accept="image/*" onchange="processarComprovante(this)">
+                    <input type="file" id="enc_comprovante" accept="image/*,application/pdf" onchange="processarComprovante(this)">
                     <div style="font-size: 30px; margin-bottom: 5px;">📄</div>
                     <div class="comprovante-txt" id="txt-comprovante">Clique para anexar o Comprovante</div>
                 </div>
@@ -678,21 +611,38 @@
     if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
     const db = firebase.database();
 
+    // Lógica de Tela de Carregamento Dinâmica
+    let isDataLoaded = false;
+    db.ref('.info/connected').on('value', snap => {
+        if(snap.val() === true && !isDataLoaded) {
+            setTimeout(() => {
+                document.getElementById('loading-screen').style.opacity = '0';
+                setTimeout(() => { 
+                    document.getElementById('loading-screen').style.display = 'none'; 
+                    document.getElementById('home-screen').style.display = 'flex';
+                }, 500);
+                isDataLoaded = true;
+            }, 1500); 
+        }
+    });
+
     function navTo(screen) {
         document.getElementById('home-screen').style.display = 'none';
         document.getElementById('produtos-screen').style.display = 'none';
         document.getElementById('encomendas-screen').style.display = 'none';
         
+        const hasWhats = localStorage.getItem('cliente_whats');
+        
         if(screen === 'home') document.getElementById('home-screen').style.display = 'flex';
         if(screen === 'produtos') {
             document.getElementById('produtos-screen').style.display = 'block';
-            const hasWhats = localStorage.getItem('cliente_whats');
             document.getElementById('btn-gear-whats').style.display = hasWhats ? 'block' : 'none';
             if(!hasWhats) document.getElementById('whats-overlay').style.display = 'flex';
             renderMenu(); 
         }
         if(screen === 'encomendas') {
             document.getElementById('encomendas-screen').style.display = 'block';
+            document.getElementById('btn-gear-whats-enc').style.display = hasWhats ? 'block' : 'none';
             iniciarEncomendaFlow();
         }
         window.scrollTo(0,0);
@@ -740,6 +690,7 @@
         if (!coverSrc && !profileSrc) {
             document.documentElement.style.setProperty('--insta-gradient', 'linear-gradient(135deg, #FF8C00 0%, #FF3D00 100%)');
             document.documentElement.style.setProperty('--header-text', '#ffffff');
+            document.documentElement.style.setProperty('--insta-blue', '#FF5722');
             return;
         }
         
@@ -752,6 +703,7 @@
         function applyTheme() {
             const grad = `linear-gradient(135deg, rgb(${covColor.r},${covColor.g},${covColor.b}) 0%, rgb(${profColor.r},${profColor.g},${profColor.b}) 100%)`;
             document.documentElement.style.setProperty('--insta-gradient', grad);
+            document.documentElement.style.setProperty('--insta-blue', `rgb(${profColor.r},${profColor.g},${profColor.b})`);
             
             const avgLuma = 0.2126 * ((covColor.r + profColor.r)/2) + 0.7152 * ((covColor.g + profColor.g)/2) + 0.0722 * ((covColor.b + profColor.b)/2);
             document.documentElement.style.setProperty('--header-text', avgLuma > 150 ? '#262626' : '#ffffff');
@@ -786,7 +738,7 @@
     function closeOverlay(id) { document.getElementById(id).style.display = 'none'; }
     function salvarWhatsLocal() {
         const tel = document.getElementById('user-whats-input').value;
-        if(tel.length > 8) { localStorage.setItem('cliente_whats', tel); document.getElementById('btn-gear-whats').style.display = 'block'; closeOverlay('whats-overlay'); } else alert("Digite um número válido!");
+        if(tel.length > 8) { localStorage.setItem('cliente_whats', tel); document.getElementById('btn-gear-whats').style.display = 'block'; document.getElementById('btn-gear-whats-enc').style.display = 'block'; closeOverlay('whats-overlay'); } else showInstaModal("Aviso", "Digite um número válido!", "⚠️");
     }
     function abrirWhatsConfig() { document.getElementById('edit-whats-input').value = localStorage.getItem('cliente_whats') || ''; document.getElementById('whats-config-overlay').style.display = 'flex'; }
     function atualizarWhatsLocal() {
@@ -817,12 +769,18 @@
             document.getElementById('app-name-home').innerText = nomeExibicao;
             document.getElementById('app-name-produtos').innerText = nomeExibicao.toUpperCase();
             document.getElementById('app-name-encomendas').innerText = nomeExibicao;
+            document.getElementById('loading-text-dyn').innerText = nomeExibicao;
             if(isAdmin) document.getElementById('cfg-nome-loja').value = storeConfig.nomeLoja || '';
 
-            if(storeConfig.cover) { document.getElementById('display-cover').src = storeConfig.cover; document.getElementById('display-cover').style.display = 'block'; }
-            if(storeConfig.profile) { document.getElementById('display-profile').src = storeConfig.profile; document.getElementById('display-profile').style.display = 'block'; }
+            if(storeConfig.cover) { 
+                document.getElementById('display-cover').src = storeConfig.cover; document.getElementById('display-cover').style.display = 'block'; 
+                document.getElementById('display-cover-enc').src = storeConfig.cover; document.getElementById('display-cover-enc').style.display = 'block'; 
+            }
+            if(storeConfig.profile) { 
+                document.getElementById('display-profile').src = storeConfig.profile; document.getElementById('display-profile').style.display = 'block'; 
+                document.getElementById('display-profile-enc').src = storeConfig.profile; document.getElementById('display-profile-enc').style.display = 'block'; 
+            }
             
-            // Chama a atualização de tema assim que carrega
             updateThemeColors(storeConfig.cover, storeConfig.profile);
 
             if(storeConfig.open) document.getElementById('cfg-open').value = storeConfig.open;
@@ -838,7 +796,11 @@
         renderMenu();
     });
 
-    db.ref('pedidos').on('value', (snap) => { comandas = []; snap.forEach(c => comandas.push({ id: c.key, ...c.val() })); comandas.sort((a,b) => b.timestamp - a.timestamp); renderComandasAdmin(); });
+    db.ref('pedidos').on('value', (snap) => { 
+        comandas = []; snap.forEach(c => comandas.push({ id: c.key, ...c.val() })); 
+        comandas.sort((a,b) => b.timestamp - a.timestamp); 
+        if(document.getElementById('comandas-overlay').style.display === 'flex') renderCalendarAdmin();
+    });
 
     function isLojaAberta() {
         if (storeConfig.dias && storeConfig.dias.length > 0 && !storeConfig.dias.includes(new Date().getDay())) return false; 
@@ -885,7 +847,13 @@
     function atualizarTotalFlutuante() { let tot=0, qtd=0; for(let i in cart){ const it=menuItems.find(x=>x.id===i); if(it) { tot+=parsePrice(it.price)*cart[i]; qtd+=cart[i]; } } const d=document.getElementById('floating-total'); if(qtd>0&&isLojaAberta()){ d.style.display='block'; d.innerText='Total: '+formatPrice(tot); d.classList.remove('pop-anim'); void d.offsetWidth; d.classList.add('pop-anim'); } else d.style.display='none'; }
     function renderFilters() { const con=document.getElementById('filters-container'); con.innerHTML=''; const cats = new Set(menuItems.map(i=>i.category||'Doces')); ['Todos','Doces','Salgados','Bebidas','Outros'].forEach(c=>{ if(c==='Todos'||cats.has(c)){ const btn=document.createElement('button'); btn.className='btn-filter'+(currentCategory===c?' active':''); btn.innerText=c; btn.onclick=()=>{currentCategory=c; renderMenu();}; con.appendChild(btn); } }); }
     function renderMenu() {
-        const la = isLojaAberta(), b=document.getElementById('status-loja-badge'); b.innerText=la?"Aberto":"Fechado"; b.className=la?"status-loja status-aberto":"status-loja status-fechado"; document.getElementById('footer-order').style.display=la?'flex':'none'; renderFilters();
+        const la = isLojaAberta(), b=document.getElementById('status-loja-badge'); 
+        b.innerText=la?"Aberto":"Fechado"; b.className=la?"status-loja status-aberto":"status-loja status-fechado"; 
+        
+        const bEnc=document.getElementById('status-loja-badge-enc'); 
+        if(bEnc) { bEnc.innerText=la?"Aberto":"Fechado"; bEnc.className=la?"status-loja status-aberto":"status-loja status-fechado"; }
+
+        document.getElementById('footer-order').style.display=la?'flex':'none'; renderFilters();
         const con=document.getElementById('menu-container'); con.innerHTML="";
         menuItems.forEach(i => {
             if(currentCategory!=='Todos' && (i.category||'Doces')!==currentCategory) return;
@@ -919,25 +887,139 @@
         cart={}; window.location.href=`https://api.whatsapp.com/send?phone=5515991422218&text=${encodeURIComponent(msg)}`; closeOverlay('checkout-overlay');
     }
 
-    // Comandas Admin (Renderização)
-    function renderComandasAdmin() {
-        const con = document.getElementById('popup-comandas-list'); if(!con) return; con.innerHTML = comandas.length===0?'<p>Sem comandas.</p>':'';
+    // ================= CALENDÁRIO COMANDAS =================
+    let currentCalMonth = new Date().getMonth();
+    let currentCalYear = new Date().getFullYear();
+    let groupedComandas = {};
+
+    function abrirComandasModal() {
+        document.getElementById('comandas-overlay').style.display='flex';
+        renderCalendarAdmin();
+    }
+
+    function renderCalendarAdmin() {
+        const listDiv = document.getElementById('popup-comandas-list');
+        if(!listDiv) return;
+
+        groupedComandas = {};
         comandas.forEach(p => {
+            let dStr;
+            if(p.dataAgendada) { dStr = p.dataAgendada; } 
+            else {
+                const d = new Date(p.timestamp);
+                const mm = String(d.getMonth()+1).padStart(2,'0');
+                const dd = String(d.getDate()).padStart(2,'0');
+                dStr = `${d.getFullYear()}-${mm}-${dd}`;
+            }
+            if(!groupedComandas[dStr]) groupedComandas[dStr] = [];
+            groupedComandas[dStr].push(p);
+        });
+
+        const daysInMonth = new Date(currentCalYear, currentCalMonth + 1, 0).getDate();
+        const firstDay = new Date(currentCalYear, currentCalMonth, 1).getDay(); // 0-6 (Sun-Sat)
+
+        let calHtml = `<div class="calendar-header">
+            <select id="cal-month" onchange="changeCalMonth(this.value)">
+                ${['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'].map((m,i)=>`<option value="${i}" ${i===currentCalMonth?'selected':''}>${m}</option>`).join('')}
+            </select>
+            <select id="cal-year" onchange="changeCalYear(this.value)">
+                ${[2024,2025,2026,2027,2028].map(y=>`<option value="${y}" ${y===currentCalYear?'selected':''}>${y}</option>`).join('')}
+            </select>
+        </div>
+        <div class="calendar-grid">
+            <div class="cal-day-header">D</div><div class="cal-day-header">S</div><div class="cal-day-header">T</div><div class="cal-day-header">Q</div><div class="cal-day-header">Q</div><div class="cal-day-header">S</div><div class="cal-day-header">S</div>`;
+
+        for(let i=0; i<firstDay; i++) calHtml += `<div class="cal-day empty"></div>`;
+
+        for(let d=1; d<=daysInMonth; d++) {
+            const dd = String(d).padStart(2,'0');
+            const mm = String(currentCalMonth+1).padStart(2,'0');
+            const dateStr = `${currentCalYear}-${mm}-${dd}`;
+            const orders = groupedComandas[dateStr] || [];
+            
+            const isBlocked = encConfig.datasBloqueadas && encConfig.datasBloqueadas[dateStr];
+            
+            let classes = 'cal-day';
+            if(isBlocked) classes += ' blocked';
+            else if(orders.length > 0) classes += ' has-order';
+
+            calHtml += `<div class="${classes}" onclick="showComandasForDay('${dateStr}')">${d}
+                ${orders.length>0 ? `<div class="cal-order-count">${orders.length}</div>` : ''}
+            </div>`;
+        }
+        calHtml += `</div><div id="day-comandas-container" style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px;">
+            <p style="color:#8e8e8e; text-align:center; font-size:14px;">Selecione um dia no calendário.</p>
+        </div>`;
+        
+        listDiv.innerHTML = calHtml;
+    }
+
+    function changeCalMonth(m) { currentCalMonth = parseInt(m); renderCalendarAdmin(); }
+    function changeCalYear(y) { currentCalYear = parseInt(y); renderCalendarAdmin(); }
+
+    function showComandasForDay(dateStr) {
+        const container = document.getElementById('day-comandas-container');
+        const orders = groupedComandas[dateStr] || [];
+        if(orders.length === 0) {
+            container.innerHTML = `<p style="color:#8e8e8e; text-align:center; font-size:14px;">Sem comandas para este dia.</p>`;
+            return;
+        }
+
+        let html = `<h4 style="margin-bottom:10px; color: var(--text-main);">Comandas de ${dateStr.split('-').reverse().join('/')}</h4>`;
+        orders.forEach(p => {
             let htmlI = ''; if(p.itens) for(let i in p.itens) htmlI+=`<div class="comanda-item"><b>${p.itens[i].qtd}x</b> ${p.itens[i].nome}</div>`;
-            const div = document.createElement('div'); div.className='comanda-box'; div.style.background = p.status==='Cancelou'?'#ffebeb':(p.status==='Concluído'?'#ebffeb':'#fff');
-            div.innerHTML = `
-                <div class="comanda-header"><div onclick="document.getElementById('b-${p.id}').style.display=document.getElementById('b-${p.id}').style.display==='none'?'block':'none'" style="flex:1;">
-                <strong style="color:var(--insta-blue);">${p.comandaId}</strong> - ${p.cliente} <span style="font-size:10px;">(${p.tipo})</span></div>
-                <b>${formatPrice(p.total||0)}</b> <button class="btn-comanda-acao" style="background:#ed4956" onclick="db.ref('pedidos/${p.id}').remove()">🗑️</button></div>
-                <div id="b-${p.id}" style="display:none;"><p style="font-size:12px;">Wpp: ${p.whatsapp}<br>End: ${p.endereco}<br>Pgto: ${p.pagamento}</p>
-                ${p.comprovante ? `<button onclick="abrirComprovante('${p.comprovante}')" style="background:#4CAF50; color:white; border:none; padding:5px; border-radius:5px; cursor:pointer; width:100%; margin-bottom:10px;">Ver Comprovante PIX</button>`:''}
-                <div>${htmlI}</div>
-                <select onchange="db.ref('pedidos/${p.id}').update({status:this.value})" style="width:100%; padding:8px; margin-top:10px;"><option value="Pendente" ${p.status==='Pendente'?'selected':''}>⏳ Pendente</option><option value="Concluído" ${p.status==='Concluído'?'selected':''}>✅ Concluído</option><option value="Cancelou" ${p.status==='Cancelou'?'selected':''}>❌ Cancelou</option></select></div>`;
-            con.appendChild(div);
+            
+            html += `
+            <div class="comanda-box" style="background: ${p.status==='Cancelou'?'#ffebeb':(p.status==='Concluído'?'#ebffeb':'#fff')}; position: relative; margin-bottom: 15px;">
+                <div class="comanda-header" onclick="document.getElementById('b-${p.id}').style.display=document.getElementById('b-${p.id}').style.display==='none'?'block':'none'">
+                    <div style="flex:1;">
+                        <strong style="color:var(--insta-blue);">${p.comandaId}</strong><br>${p.cliente} <span style="font-size:10px;">(${p.tipo})</span>
+                    </div>
+                    <b>${formatPrice(p.total||0)}</b>
+                </div>
+                <div style="position: absolute; right: 15px; top: 15px; z-index: 10;">
+                    <button class="btn-comanda-acao" style="background:#ed4956" onclick="confirmDeletePedido('${p.id}', '${p.dataAgendada}')">🗑️</button>
+                </div>
+                <div id="b-${p.id}" style="display:none; margin-top: 10px; padding-top: 10px; border-top: 1px solid #eee;">
+                    <p style="font-size:12px; margin-bottom:10px;">Wpp: ${p.whatsapp}<br>End: ${p.endereco}<br>Pgto: ${p.pagamento}</p>
+                    ${p.comprovante ? `<button type="button" onclick="abrirComprovante('${p.comprovante}')" style="background:#4CAF50; color:white; border:none; padding:10px; border-radius:5px; cursor:pointer; width:100%; margin-bottom:10px; font-weight:bold;">📄 Ver Comprovante</button>`:''}
+                    <div>${htmlI}</div>
+                    <select onchange="db.ref('pedidos/${p.id}').update({status:this.value})" style="width:100%; padding:10px; margin-top:10px; border-radius:8px; font-family:'Inter',sans-serif; background:#fafafa; border:1px solid #dbdbdb;">
+                        <option value="Pendente" ${p.status==='Pendente'?'selected':''}>⏳ Pendente</option>
+                        <option value="Concluído" ${p.status==='Concluído'?'selected':''}>✅ Concluído</option>
+                        <option value="Cancelou" ${p.status==='Cancelou'?'selected':''}>❌ Cancelou</option>
+                    </select>
+                </div>
+            </div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function confirmDeletePedido(id, dataAgendada) {
+        showInstaModal('Excluir Comanda?', 'Tem certeza que deseja apagar?', '🗑️', 'confirm', () => {
+            db.ref('pedidos/'+id).remove();
+            if(dataAgendada) {
+                const ordersOnDate = groupedComandas[dataAgendada] ? groupedComandas[dataAgendada].length : 0;
+                if(ordersOnDate <= 1) { 
+                    db.ref(`config_encomendas/datasBloqueadas/${dataAgendada}`).remove();
+                }
+            }
+            renderCalendarAdmin();
         });
     }
+
     function abrirComprovante(b64) {
-        const i=document.createElement('img'); i.src=b64; document.getElementById('modal-slider').innerHTML=''; document.getElementById('modal-slider').appendChild(i); document.getElementById('img-modal').style.display='flex';
+        const sl = document.getElementById('modal-slider'); sl.innerHTML = '';
+        if(b64.startsWith('data:application/pdf')) {
+            const emb = document.createElement('embed');
+            emb.src = b64; emb.width = "100%"; emb.height = "500px"; emb.type = "application/pdf";
+            sl.appendChild(emb);
+        } else {
+            const i=document.createElement('img'); i.src=b64;
+            i.style.objectFit = 'contain'; 
+            sl.appendChild(i);
+        }
+        document.getElementById('img-modal').style.display='flex';
     }
 
 
@@ -952,14 +1034,13 @@
     let encData = { peso: "1", massa: null, recheio: null, cobertura: null, adicional: null, comprovante: null };
     const stepsEnc = ['peso', 'massa', 'recheio', 'cobertura', 'adicional', 'dados', 'pagamento'];
     let currentStepIdx = 0;
+    let editIngCat = null, editIngNome = null;
 
-    // Admin Encomendas - Carregar Dados
     db.ref('config_encomendas').on('value', snap => {
         if(snap.val()) encConfig = snap.val();
         if(!encConfig.ingredientes) encConfig.ingredientes = { massa:{}, recheio:{}, cobertura:{}, adicional:{} };
         if(!encConfig.datasBloqueadas) encConfig.datasBloqueadas = {};
         
-        // Atualizar painel admin se aberto
         if(isAdmin) {
             document.getElementById('cfg-margem-pct').value = encConfig.margemPct || '';
             renderTabelaIngredientesAdmin();
@@ -969,12 +1050,15 @@
 
     function renderTabelaIngredientesAdmin() {
         const con = document.getElementById('admin-ing-list');
-        let html = '<table class="admin-table"><tr><th>Tipo</th><th>Nome</th><th>Valores (1,2,3,4kg)</th><th>Ação</th></tr>';
+        let html = '<table class="admin-table"><tr><th>Tipo</th><th>Nome</th><th>Valores (1,2,3,4)</th><th style="text-align:center;">Ações</th></tr>';
         for(let cat in encConfig.ingredientes) {
             for(let nome in encConfig.ingredientes[cat]) {
                 const p = encConfig.ingredientes[cat][nome];
                 html += `<tr><td>${cat}</td><td>${nome}</td><td>R$${p['1']}/R$${p['2']}/R$${p['3']}/R$${p['4']}</td>
-                <td><button onclick="removerIngredienteEnc('${cat}', '${nome}')" style="background:#ed4956;color:#fff;border:none;padding:5px;cursor:pointer;">X</button></td></tr>`;
+                <td style="text-align:center;">
+                    <button onclick="editarIngredienteEnc('${cat}', '${nome}')" style="background:var(--insta-blue);color:#fff;border:none;padding:5px 8px;cursor:pointer;border-radius:4px;margin-right:5px;font-size:12px;font-weight:bold;">Editar</button>
+                    <button onclick="removerIngredienteEnc('${cat}', '${nome}')" style="background:#ed4956;color:#fff;border:none;padding:5px 8px;cursor:pointer;border-radius:4px;font-size:12px;font-weight:bold;">X</button>
+                </td></tr>`;
             }
         }
         con.innerHTML = html + '</table>';
@@ -995,7 +1079,6 @@
           .then(() => showInstaModal('Sucesso', 'Margem extra salva com sucesso.', '✅'));
     }
 
-    // Função "Varinha Mágica" para auto-preencher os preços dos quilos adicionais
     function autoPreencherIngredientes() {
         const p1 = parseFloat(document.getElementById('cfg-ing-p1').value);
         if(p1 && !isNaN(p1)) {
@@ -1005,6 +1088,19 @@
         } else {
             showInstaModal('Aviso', 'Preencha o valor de 1Kg primeiro!', '⚠️');
         }
+    }
+
+    function editarIngredienteEnc(cat, nome) {
+        const item = encConfig.ingredientes[cat][nome];
+        document.getElementById('cfg-ing-tipo').value = cat;
+        document.getElementById('cfg-ing-nome').value = nome;
+        document.getElementById('cfg-ing-p1').value = item['1'];
+        document.getElementById('cfg-ing-p2').value = item['2'];
+        document.getElementById('cfg-ing-p3').value = item['3'];
+        document.getElementById('cfg-ing-p4').value = item['4'];
+        editIngCat = cat; editIngNome = nome;
+        document.getElementById('btn-salvar-ing').innerText = "ATUALIZAR";
+        document.getElementById('btn-salvar-ing').style.background = "var(--insta-blue)";
     }
 
     function addIngredienteEnc() {
@@ -1017,21 +1113,27 @@
         
         if(!nome) return showInstaModal('Erro', 'Preencha o nome do ingrediente.', '❌');
         
+        if(editIngCat && editIngNome && (editIngCat !== tipo || editIngNome !== nome)) {
+            db.ref(`config_encomendas/ingredientes/${editIngCat}/${editIngNome}`).remove();
+        }
+
         db.ref(`config_encomendas/ingredientes/${tipo}/${nome}`).set({ "1": p1, "2": p2, "3": p3, "4": p4 })
           .then(() => {
               document.getElementById('cfg-ing-nome').value='';
               document.getElementById('cfg-ing-p1').value=''; document.getElementById('cfg-ing-p2').value='';
               document.getElementById('cfg-ing-p3').value=''; document.getElementById('cfg-ing-p4').value='';
+              editIngCat = null; editIngNome = null;
+              document.getElementById('btn-salvar-ing').innerText = "SALVAR";
+              document.getElementById('btn-salvar-ing').style.background = "#4CAF50";
           });
     }
 
     function removerIngredienteEnc(cat, nome) {
-        if(confirm(`Remover ${nome}?`)) db.ref(`config_encomendas/ingredientes/${cat}/${nome}`).remove();
+        showInstaModal('Excluir?', `Remover ${nome}?`, '🗑️', 'confirm', () => db.ref(`config_encomendas/ingredientes/${cat}/${nome}`).remove() );
     }
     
     function desbloquearData(dataStr) { db.ref(`config_encomendas/datasBloqueadas/${dataStr}`).remove(); }
 
-    // Cliente Encomendas - Lógica Stepper e Cálculos
     function iniciarEncomendaFlow() {
         currentStepIdx = 0; encData = { peso: "1", massa: null, recheio: null, cobertura: null, adicional: null, comprovante: null };
         document.querySelectorAll('input[name="enc_peso"]').forEach(r => { if(r.value==="1") { r.checked=true; r.parentElement.classList.add('selected'); } else r.parentElement.classList.remove('selected'); });
@@ -1040,21 +1142,21 @@
 
     function irParaEtapa(idStep) {
         const idx = stepsEnc.indexOf(idStep);
-        if(idx > currentStepIdx && idx < 5) return; // Só deixa pular pra trás ou no fluxo normal (impedir pular etapas sem preencher)
+        if(idx > currentStepIdx && idx < 5) return; 
         currentStepIdx = idx;
         atualizarUIEtapas();
     }
 
     function voltarEtapaEnc() { if(currentStepIdx > 0) { currentStepIdx--; atualizarUIEtapas(); } }
+    
     function avancarEtapaEnc() {
-        // Validações antes de avançar
         const s = stepsEnc[currentStepIdx];
-        if(s==='massa' && !encData.massa) return alert("Selecione uma massa.");
-        if(s==='recheio' && !encData.recheio) return alert("Selecione um recheio.");
-        if(s==='cobertura' && !encData.cobertura) return alert("Selecione uma cobertura.");
+        if(s==='massa' && !encData.massa) return showInstaModal('Aviso', "Selecione uma massa.", '⚠️');
+        if(s==='recheio' && !encData.recheio) return showInstaModal('Aviso', "Selecione um recheio.", '⚠️');
+        if(s==='cobertura' && !encData.cobertura) return showInstaModal('Aviso', "Selecione uma cobertura.", '⚠️');
         if(s==='dados') {
-            if(!document.getElementById('enc_nome').value || !document.getElementById('enc_data').value || !document.getElementById('enc_hora').value) return alert("Preencha Nome, Data e Horário.");
-            if(document.getElementById('enc_tipo').value === 'Entrega' && !document.getElementById('enc_end').value) return alert("Preencha o endereço.");
+            if(!document.getElementById('enc_nome').value || !document.getElementById('enc_data').value || !document.getElementById('enc_hora').value) return showInstaModal('Aviso', "Preencha Nome, Data e Horário.", '⚠️');
+            if(document.getElementById('enc_tipo').value === 'Entrega' && !document.getElementById('enc_end').value) return showInstaModal('Aviso', "Preencha o endereço.", '⚠️');
         }
         if(s==='pagamento') {
             finalizarEncomendaFirebase();
@@ -1067,22 +1169,19 @@
     function selectRadioEnc(cat, val, labelEl) {
         encData[cat] = val;
         
-        // Remove .selected dos irmãos
         const name = `enc_${cat}`;
         document.querySelectorAll(`input[name="${name}"]`).forEach(inp => {
             inp.parentElement.classList.remove('selected');
         });
-        // Add .selected ao atual
         const checkedInp = document.querySelector(`input[name="${name}"][value="${val}"]`);
         if(checkedInp) checkedInp.parentElement.classList.add('selected');
 
-        if(cat === 'peso') renderOpcoesDinamicas(); // Recarrega preços baseados no peso
+        if(cat === 'peso') renderOpcoesDinamicas(); 
         
         calcularTotalEncomenda();
 
-        // Auto-avança após 300ms (apenas ingredientes)
         if(['peso','massa','recheio','cobertura','adicional'].includes(cat)) {
-            setTimeout(() => { if(encData[cat]) avancarEtapaEnc(); }, 400);
+            setTimeout(() => { if(encData[cat]) avancarEtapaEnc(); }, 300);
         }
     }
 
@@ -1092,7 +1191,6 @@
             const con = document.getElementById(containerId); con.innerHTML = '';
             const itens = encConfig.ingredientes[cat] || {};
             
-            // Adicionar opção "Nenhum" para adicionais/coberturas se quiser
             if(cat === 'adicional' || cat === 'cobertura') {
                 con.innerHTML += `
                 <label class="radio-label ${encData[cat]==='Nenhum'?'selected':''}" onclick="selectRadioEnc('${cat}', 'Nenhum')">
@@ -1122,19 +1220,16 @@
     }
 
     function atualizarUIEtapas() {
-        // Timeline visual
         stepsEnc.forEach((s, i) => {
             const stepEl = document.getElementById(`st-${s}`);
             if(i < currentStepIdx) { stepEl.className = 'stepper-step completed'; }
             else if(i === currentStepIdx) { stepEl.className = 'stepper-step active'; stepEl.scrollIntoView({behavior: "smooth", block: "nearest", inline: "center"}); }
             else { stepEl.className = 'stepper-step'; }
             
-            // Exibir div
             const cont = document.getElementById(`step-${s}`);
             if(i === currentStepIdx) cont.classList.add('active'); else cont.classList.remove('active');
         });
 
-        // Botão Final
         const btnNext = document.getElementById('btn-enc-avancar');
         if(currentStepIdx === stepsEnc.length - 1) {
             btnNext.innerText = 'CONCLUIR PEDIDO';
@@ -1146,7 +1241,7 @@
             btnNext.style.color = 'var(--header-text)';
         }
 
-        if(currentStepIdx === 1 && !encData.massa) renderOpcoesDinamicas(); // Inicializa renders se precisar
+        if(currentStepIdx === 1 && !encData.massa) renderOpcoesDinamicas(); 
         calcularTotalEncomenda();
     }
 
@@ -1155,15 +1250,12 @@
         let totalIng = 0;
         const p = String(encData.peso);
         
-        // Soma Ingredientes
         if(encData.massa && encData.massa !== 'Nenhum' && encConfig.ingredientes.massa[encData.massa]) totalIng += parseFloat(encConfig.ingredientes.massa[encData.massa][p]) || 0;
         if(encData.recheio && encData.recheio !== 'Nenhum' && encConfig.ingredientes.recheio[encData.recheio]) totalIng += parseFloat(encConfig.ingredientes.recheio[encData.recheio][p]) || 0;
         if(encData.cobertura && encData.cobertura !== 'Nenhum' && encConfig.ingredientes.cobertura[encData.cobertura]) totalIng += parseFloat(encConfig.ingredientes.cobertura[encData.cobertura][p]) || 0;
         if(encData.adicional && encData.adicional !== 'Nenhum' && encConfig.ingredientes.adicional[encData.adicional]) totalIng += parseFloat(encConfig.ingredientes.adicional[encData.adicional][p]) || 0;
 
-        let subtotal = totalIng; // Sem custo de hora
-        
-        // % Gastos Extras
+        let subtotal = totalIng; 
         let taxaExtra = subtotal * ((parseFloat(encConfig.margemPct) || 0) / 100);
         
         encTotalAtual = subtotal + taxaExtra;
@@ -1212,7 +1304,7 @@
         msg += `Agendado: ${dataFormatada} às ${h}\n\n`;
         msg += `*🎂 DETALHES DO BOLO:*\n- Peso: ${encData.peso}kg\n- Massa: ${encData.massa}\n- Recheio: ${encData.recheio}\n- Cobertura: ${encData.cobertura||'Nenhum'}\n- Adicional: ${encData.adicional||'Nenhum'}\n\n`;
         msg += `*🧾 VALORES:*\nTotal: ${formatPrice(encTotalAtual)}\nSinal Pago (50%): ${formatPrice(encTotalAtual/2)}\n\n`;
-        msg += `*O comprovante foi enviado pelo App.* Aguardo a confirmação!`;
+        msg += `*O comprovante foi salvo no App e anexado à sua comanda!* Aguardo a confirmação do pedido!`;
 
         const detalhesParaFirebase = {
             comandaId: cId, cliente: n, whatsapp: w, tipo: 'Encomenda (' + t + ')',
@@ -1223,11 +1315,14 @@
             dataAgendada: d, horaAgendada: h, comprovante: encData.comprovante, status: 'Pendente', timestamp: Date.now()
         };
 
-        // Salva pedido e bloqueia data
-        db.ref('pedidos').push(detalhesParaFirebase).then(() => {
+        const dateOrders = comandas.filter(c => c.dataAgendada === d);
+        if(dateOrders.length >= 1) { 
             db.ref(`config_encomendas/datasBloqueadas/${d}`).set(true);
+        }
+
+        db.ref('pedidos').push(detalhesParaFirebase).then(() => {
             window.location.href = `https://api.whatsapp.com/send?phone=5515991422218&text=${encodeURIComponent(msg)}`;
-            navTo('home'); // Reseta
+            navTo('home'); 
         });
     }
 
