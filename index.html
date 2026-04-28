@@ -43,23 +43,21 @@
             100% { transform: scale(1); opacity: 1; } 
         }
 
-        /* Spinner de Carregamento Moderno */
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
         /* ================= TELA DE LOADING ================= */
         #loading-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--insta-gradient); z-index: 999999;
+            background: #050505; z-index: 999999;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             color: white; transition: opacity 0.5s ease-out;
         }
-        .spinner {
-            width: 50px; height: 50px;
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top: 4px solid #ffffff;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
+        .modern-icon {
+            width: 70px; height: 70px; margin-bottom: 25px;
+            animation: pulseGlow 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.4));
+        }
+        @keyframes pulseGlow {
+            from { transform: scale(0.9); opacity: 0.7; }
+            to { transform: scale(1.1); opacity: 1; }
         }
         .loading-text { font-family: 'Grand Hotel', cursive; font-size: 36px; letter-spacing: 2px; }
 
@@ -245,7 +243,11 @@
 <body>
 
 <div id="loading-screen">
-    <div class="spinner"></div>
+    <svg class="modern-icon" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2.5a2.5 2.5 0 0 1 2.5 2.5c0 1.25-1 2-2.5 3-1.5-1-2.5-1.75-2.5-3A2.5 2.5 0 0 1 12 2.5z"/>
+        <path d="M4.5 12h15c.83 0 1.5.67 1.5 1.5v3c0 2.5-2 4.5-4.5 4.5h-9C5 21 3 19 3 16.5v-3C3 12.67 3.67 12 4.5 12z"/>
+        <path d="M3 12.5c2-1 4-1 6 0s4 1 6 0 4-1 6 0"/>
+    </svg>
     <div class="loading-text" id="loading-text-dyn">Dessa's Cake</div>
 </div>
 
@@ -754,7 +756,14 @@
     
     function checkAdminPass() {
         if (document.getElementById('admin-pass').value === "1709") {
-            isAdmin = true; document.getElementById('admin-panel').style.display = 'block'; document.getElementById('btn-admin-comandas').style.display = 'flex'; closeOverlay('login-overlay'); renderMenu(); showInstaModal('Bem-vinda!', 'Modo administrador ativado.', '👩‍🍳');
+            isAdmin = true; 
+            document.getElementById('admin-panel').style.display = 'block'; 
+            document.getElementById('btn-admin-comandas').style.display = 'flex'; 
+            closeOverlay('login-overlay'); 
+            renderMenu(); 
+            renderTabelaIngredientesAdmin(); // Renderiza imediatamente
+            renderDatasBloqueadasAdmin();    // Renderiza imediatamente
+            showInstaModal('Bem-vinda!', 'Modo administrador ativado.', '👩‍🍳');
             if(storeConfig.nomeLoja) document.getElementById('cfg-nome-loja').value = storeConfig.nomeLoja;
         } else showInstaModal('Erro', 'Senha incorreta.', '❌');
     }
@@ -1151,6 +1160,8 @@
     
     function avancarEtapaEnc() {
         const s = stepsEnc[currentStepIdx];
+        
+        // Verifica APENAS SE TENTAR AVANÇAR e ainda estiver vazio!
         if(s==='massa' && !encData.massa) return showInstaModal('Aviso', "Selecione uma massa.", '⚠️');
         if(s==='recheio' && !encData.recheio) return showInstaModal('Aviso', "Selecione um recheio.", '⚠️');
         if(s==='cobertura' && !encData.cobertura) return showInstaModal('Aviso', "Selecione uma cobertura.", '⚠️');
