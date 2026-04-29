@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title id="app-title">Dessa's Cake | App</title>
+    <title id="app-title">Carregando... | App</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Grand+Hotel&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     
@@ -168,11 +168,12 @@
         
         #insta-modal-overlay { z-index: 99999 !important; }
 
-        #img-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; flex-direction: column; justify-content: center; align-items: center; }
+        /* Ajuste Cirúrgico: Comprovante aparecendo na frente de tudo e preenchendo certo */
+        #img-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 999999; flex-direction: column; justify-content: center; align-items: center; }
         .modal-close { position: absolute; top: 20px; right: 20px; color: white; font-size: 32px; font-weight: bold; cursor: pointer; z-index: 2001; }
         .slider-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; width: 100%; max-width: 500px; scrollbar-width: none; align-items: center; justify-content: center;}
         .slider-container::-webkit-scrollbar { display: none; }
-        .slider-container img { flex: 0 0 100%; scroll-snap-align: center; max-height: 85vh; border-radius: 10px; padding: 0 10px; object-fit: contain; }
+        .slider-container img { flex: 0 0 100%; max-width: 100vw; scroll-snap-align: center; max-height: 85vh; border-radius: 10px; padding: 0 10px; object-fit: contain; }
         .slider-container embed { flex: 0 0 100%; max-height: 85vh; border-radius: 10px; }
 
         /* ================= TELA ENCOMENDAS (REFORMULADA) ================= */
@@ -254,7 +255,7 @@
         <path d="M12 4h.01"></path>
         <path d="M17 4h.01"></path>
     </svg>
-    <div class="loading-text" id="loading-text-dyn">Dessa's Cake</div>
+    <div class="loading-text" id="loading-text-dyn">Carregando...</div>
 </div>
 
 <div id="insta-modal-overlay" class="insta-overlay">
@@ -272,7 +273,7 @@
 </div>
 
 <div id="home-screen">
-    <h1 class="home-title" id="app-name-home">Dessa's Cake</h1>
+    <h1 class="home-title" id="app-name-home">Carregando...</h1>
     <button class="btn-home" onclick="navTo('produtos')">Delivery</button>
     <button class="btn-home" onclick="navTo('encomendas')">Encomendas</button>
     <button class="btn-home" onclick="window.location.href='https://share.google/V5mK11fYc07tWWEqM'">Avaliação</button>
@@ -280,7 +281,7 @@
 
 <div id="produtos-screen">
     <header>
-        <h1 onclick="handleTitleClick()" id="app-name-produtos">DESSA'S CAKE</h1>
+        <h1 onclick="handleTitleClick()" id="app-name-produtos">CARREGANDO...</h1>
         <button class="header-btn-gear" id="btn-gear-whats" onclick="abrirWhatsConfig()" title="Configurar WhatsApp">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
         </button>
@@ -461,7 +462,7 @@
 <div id="encomendas-screen">
     <div class="app-container">
         <header class="header-enc">
-            <h1 id="app-name-encomendas" onclick="handleTitleClick()">Dessa's Cake</h1>
+            <h1 id="app-name-encomendas" onclick="handleTitleClick()">Carregando...</h1>
             <button class="header-btn-gear" id="btn-gear-whats-enc" onclick="abrirWhatsConfig()" title="Configurar WhatsApp" style="display: none;">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
             </button>
@@ -912,6 +913,35 @@
         renderCalendarAdmin();
     }
 
+    // Ajuste Cirúrgico: Função auxiliar para gerar os cards das comandas para não duplicar código
+    function gerarCardComanda(p) {
+        let htmlI = ''; if(p.itens) for(let i in p.itens) htmlI+=`<div class="comanda-item"><b>${p.itens[i].qtd}x</b> ${p.itens[i].nome}</div>`;
+        let dStr = p.dataAgendada ? p.dataAgendada.split('-').reverse().join('/') : new Date(p.timestamp).toLocaleDateString('pt-BR');
+        return `
+        <div class="comanda-box" style="background: ${p.status==='Cancelou'?'#ffebeb':(p.status==='Concluído'?'#ebffeb':'#fff')}; position: relative; margin-bottom: 15px;">
+            <div class="comanda-header" onclick="document.getElementById('b-${p.id}').style.display=document.getElementById('b-${p.id}').style.display==='none'?'block':'none'">
+                <div style="flex:1;">
+                    <strong style="color:var(--insta-blue);">${p.comandaId}</strong><br>${p.cliente} <span style="font-size:10px;">(${p.tipo})</span>
+                    <div style="font-size:11px; color:#888; margin-top:3px;">📅 ${dStr}</div>
+                </div>
+                <b>${formatPrice(p.total||0)}</b>
+            </div>
+            <div style="position: absolute; right: 15px; top: 15px; z-index: 10;">
+                <button class="btn-comanda-acao" style="background:#ed4956" onclick="confirmDeletePedido('${p.id}', '${p.dataAgendada}')">🗑️</button>
+            </div>
+            <div id="b-${p.id}" style="display:none; margin-top: 10px; padding-top: 10px; border-top: 1px solid #eee;">
+                <p style="font-size:12px; margin-bottom:10px;">Wpp: ${p.whatsapp}<br>End: ${p.endereco}<br>Pgto: ${p.pagamento}</p>
+                ${p.comprovante ? `<button type="button" onclick="abrirComprovante('${p.comprovante}')" style="background:#4CAF50; color:white; border:none; padding:10px; border-radius:5px; cursor:pointer; width:100%; margin-bottom:10px; font-weight:bold;">📄 Ver Comprovante</button>`:''}
+                <div>${htmlI}</div>
+                <select onchange="db.ref('pedidos/${p.id}').update({status:this.value})" style="width:100%; padding:10px; margin-top:10px; border-radius:8px; font-family:'Inter',sans-serif; background:#fafafa; border:1px solid #dbdbdb;">
+                    <option value="Pendente" ${p.status==='Pendente'?'selected':''}>⏳ Pendente</option>
+                    <option value="Concluído" ${p.status==='Concluído'?'selected':''}>✅ Concluído</option>
+                    <option value="Cancelou" ${p.status==='Cancelou'?'selected':''}>❌ Cancelou</option>
+                </select>
+            </div>
+        </div>`;
+    }
+
     function renderCalendarAdmin() {
         const listDiv = document.getElementById('popup-comandas-list');
         if(!listDiv) return;
@@ -962,10 +992,18 @@
                 ${orders.length>0 ? `<div class="cal-order-count">${orders.length}</div>` : ''}
             </div>`;
         }
-        calHtml += `</div><div id="day-comandas-container" style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px;">
-            <p style="color:#8e8e8e; text-align:center; font-size:14px;">Selecione um dia no calendário.</p>
-        </div>`;
         
+        // Ajuste Cirúrgico: Mostrar TODAS as comandas por padrão, ao invés de apenas mandar clicar no dia.
+        calHtml += `</div><div id="day-comandas-container" style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px;">`;
+        calHtml += `<h4 style="margin-bottom:10px; color: var(--text-main);">Todas as Comandas</h4>`;
+        
+        if (comandas.length === 0) {
+            calHtml += `<p style="color:#8e8e8e; text-align:center; font-size:14px;">Nenhuma comanda encontrada.</p>`;
+        } else {
+            comandas.forEach(p => { calHtml += gerarCardComanda(p); });
+        }
+        
+        calHtml += `</div>`;
         listDiv.innerHTML = calHtml;
     }
 
@@ -975,50 +1013,24 @@
     function showComandasForDay(dateStr) {
         const container = document.getElementById('day-comandas-container');
         const orders = groupedComandas[dateStr] || [];
-        if(orders.length === 0) {
-            container.innerHTML = `<p style="color:#8e8e8e; text-align:center; font-size:14px;">Sem comandas para este dia.</p>`;
-            return;
-        }
+        
+        let html = `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                        <h4 style="color: var(--text-main);">Comandas de ${dateStr.split('-').reverse().join('/')}</h4>
+                        <button class="btn-insta-link" style="width:auto; padding:5px; border: 1px solid #eee; border-radius: 5px; font-size:12px;" onclick="renderCalendarAdmin()">Ver Todas</button>
+                    </div>`;
 
-        let html = `<h4 style="margin-bottom:10px; color: var(--text-main);">Comandas de ${dateStr.split('-').reverse().join('/')}</h4>`;
-        orders.forEach(p => {
-            let htmlI = ''; if(p.itens) for(let i in p.itens) htmlI+=`<div class="comanda-item"><b>${p.itens[i].qtd}x</b> ${p.itens[i].nome}</div>`;
-            
-            html += `
-            <div class="comanda-box" style="background: ${p.status==='Cancelou'?'#ffebeb':(p.status==='Concluído'?'#ebffeb':'#fff')}; position: relative; margin-bottom: 15px;">
-                <div class="comanda-header" onclick="document.getElementById('b-${p.id}').style.display=document.getElementById('b-${p.id}').style.display==='none'?'block':'none'">
-                    <div style="flex:1;">
-                        <strong style="color:var(--insta-blue);">${p.comandaId}</strong><br>${p.cliente} <span style="font-size:10px;">(${p.tipo})</span>
-                    </div>
-                    <b>${formatPrice(p.total||0)}</b>
-                </div>
-                <div style="position: absolute; right: 15px; top: 15px; z-index: 10;">
-                    <button class="btn-comanda-acao" style="background:#ed4956" onclick="confirmDeletePedido('${p.id}', '${p.dataAgendada}')">🗑️</button>
-                </div>
-                <div id="b-${p.id}" style="display:none; margin-top: 10px; padding-top: 10px; border-top: 1px solid #eee;">
-                    <p style="font-size:12px; margin-bottom:10px;">Wpp: ${p.whatsapp}<br>End: ${p.endereco}<br>Pgto: ${p.pagamento}</p>
-                    ${p.comprovante ? `<button type="button" onclick="abrirComprovante('${p.comprovante}')" style="background:#4CAF50; color:white; border:none; padding:10px; border-radius:5px; cursor:pointer; width:100%; margin-bottom:10px; font-weight:bold;">📄 Ver Comprovante</button>`:''}
-                    <div>${htmlI}</div>
-                    <select onchange="db.ref('pedidos/${p.id}').update({status:this.value})" style="width:100%; padding:10px; margin-top:10px; border-radius:8px; font-family:'Inter',sans-serif; background:#fafafa; border:1px solid #dbdbdb;">
-                        <option value="Pendente" ${p.status==='Pendente'?'selected':''}>⏳ Pendente</option>
-                        <option value="Concluído" ${p.status==='Concluído'?'selected':''}>✅ Concluído</option>
-                        <option value="Cancelou" ${p.status==='Cancelou'?'selected':''}>❌ Cancelou</option>
-                    </select>
-                </div>
-            </div>`;
-        });
+        if(orders.length === 0) {
+            html += `<p style="color:#8e8e8e; text-align:center; font-size:14px;">Sem comandas para este dia.</p>`;
+        } else {
+            orders.forEach(p => { html += gerarCardComanda(p); });
+        }
         container.innerHTML = html;
+        container.scrollIntoView({behavior: "smooth", block: "nearest"});
     }
 
     function confirmDeletePedido(id, dataAgendada) {
         showInstaModal('Excluir Comanda?', 'Tem certeza que deseja apagar?', '🗑️', 'confirm', () => {
             db.ref('pedidos/'+id).remove();
-            if(dataAgendada) {
-                const ordersOnDate = groupedComandas[dataAgendada] ? groupedComandas[dataAgendada].length : 0;
-                if(ordersOnDate <= 1) { 
-                    db.ref(`config_encomendas/datasBloqueadas/${dataAgendada}`).remove();
-                }
-            }
             renderCalendarAdmin();
         });
     }
@@ -1167,7 +1179,6 @@
     function avancarEtapaEnc() {
         const s = stepsEnc[currentStepIdx];
         
-        // Verifica APENAS SE TENTAR AVANÇAR e ainda estiver vazio!
         if(s==='massa' && !encData.massa) return showInstaModal('Aviso', "Selecione uma massa.", '⚠️');
         if(s==='recheio' && !encData.recheio) return showInstaModal('Aviso', "Selecione um recheio.", '⚠️');
         if(s==='cobertura' && !encData.cobertura) return showInstaModal('Aviso', "Selecione uma cobertura.", '⚠️');
@@ -1196,8 +1207,6 @@
         if(cat === 'peso') renderOpcoesDinamicas(); 
         
         calcularTotalEncomenda();
-
-        // O avanço automático via setTimeout foi cirurgicamente removido daqui!
     }
 
     function renderOpcoesDinamicas() {
@@ -1311,7 +1320,8 @@
         const partesData = d.split('-');
         const dataFormatada = `${partesData[2]}/${partesData[1]}/${partesData[0]}`;
 
-        const nomeLoja = document.getElementById('app-name-home').innerText;
+        // Pega o nome customizado do Firebase, caso exista
+        const nomeLoja = storeConfig.nomeLoja || "Dessa's Cake";
 
         let msg = `*Encomenda ${cId}*\n🎂 *${nomeLoja}*\n\n`;
         msg += `*👤 CLIENTE:*\nNome: ${n}\nTipo: ${t}\n`;
@@ -1329,11 +1339,6 @@
             },
             dataAgendada: d, horaAgendada: h, comprovante: encData.comprovante, status: 'Pendente', timestamp: Date.now()
         };
-
-        const dateOrders = comandas.filter(c => c.dataAgendada === d);
-        if(dateOrders.length >= 1) { 
-            db.ref(`config_encomendas/datasBloqueadas/${d}`).set(true);
-        }
 
         db.ref('pedidos').push(detalhesParaFirebase).then(() => {
             window.location.href = `https://api.whatsapp.com/send?phone=5515991422218&text=${encodeURIComponent(msg)}`;
