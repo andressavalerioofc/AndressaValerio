@@ -350,7 +350,7 @@
         </div>
     </div>
 
-    <div id="comandas-overlay" class="insta-overlay">
+    <div id="comandas-overlay" class="insta-overlay" style="z-index: 100000 !important;">
         <div class="insta-popup" style="max-width: 400px; width: 95%; max-height: 85vh; display: flex; flex-direction: column; padding: 20px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                 <div style="font-weight: 800; font-size: 1.2rem;">📋 Comandas & Encomendas</div>
@@ -985,8 +985,11 @@
             const isBlocked = encConfig.datasBloqueadas && encConfig.datasBloqueadas[dateStr];
             
             let classes = 'cal-day';
-            if(isBlocked) classes += ' blocked';
-            else if(orders.length > 0) classes += ' has-order';
+            if(orders.length > 0) {
+                classes += ' has-order';
+            } else if(isBlocked) {
+                classes += ' blocked';
+            }
 
             calHtml += `<div class="${classes}" onclick="showComandasForDay('${dateStr}')">${d}
                 ${orders.length>0 ? `<div class="cal-order-count">${orders.length}</div>` : ''}
@@ -1020,7 +1023,7 @@
                     </div>`;
 
         if(orders.length === 0) {
-            html += `<p style="color:#8e8e8e; text-align:center; font-size:14px;">Sem comandas para este dia.</p>`;
+            html += `<p style="color:#8e8e8e; text-align:center; font-size:14px;">Nenhum agendamento para essa data.</p>`;
         } else {
             orders.forEach(p => { html += gerarCardComanda(p); });
         }
@@ -1341,6 +1344,7 @@
         };
 
         db.ref('pedidos').push(detalhesParaFirebase).then(() => {
+            db.ref('config_encomendas/datasBloqueadas/' + d).set(true);
             window.location.href = `https://api.whatsapp.com/send?phone=5515991422218&text=${encodeURIComponent(msg)}`;
             navTo('home'); 
         });
