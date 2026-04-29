@@ -64,12 +64,12 @@
         /* ================= TELA INICIAL ================= */
         #home-screen { display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background: var(--insta-gradient); padding: 20px; }
 
-        .home-title { font-family: 'Grand Hotel', cursive; font-size: 56px; color: var(--header-text); margin-bottom: 50px; text-shadow: 0 4px 10px rgba(0,0,0,0.1); animation: fadeUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-
+        .home-title { font-family: 'Grand Hotel', cursive !important; font-size: 56px; color: var(--header-text); margin-bottom: 5px; text-shadow: 0 4px 10px rgba(0,0,0,0.1); animation: fadeUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-transform: none !important;}
+        
         .btn-home { background: white; color: #262626; border: 1px solid rgba(0,0,0,0.05); width: 100%; max-width: 280px; padding: 16px; border-radius: 30px; font-size: 16px; font-weight: 700; margin-bottom: 15px; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.15); transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); animation: fadeUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both; }
-        .btn-home:nth-child(2) { animation-delay: 0.1s; }
-        .btn-home:nth-child(3) { animation-delay: 0.2s; }
-        .btn-home:nth-child(4) { animation-delay: 0.3s; }
+        .btn-home:nth-child(3) { animation-delay: 0.1s; }
+        .btn-home:nth-child(4) { animation-delay: 0.2s; }
+        .btn-home:nth-child(5) { animation-delay: 0.3s; }
         .btn-home:active { transform: scale(0.92); }
 
         /* ================= BOTÕES FLUTUANTES ================= */
@@ -79,14 +79,19 @@
         .btn-comandas-float { position: fixed; bottom: 165px; right: 20px; width: 55px; height: 55px; border-radius: 50%; background: var(--insta-gradient); color: var(--header-text); border: none; display: none; align-items: center; justify-content: center; box-shadow: 0 6px 15px rgba(0,0,0,0.25); cursor: pointer; z-index: 9999; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s; }
         .btn-comandas-float:active { transform: scale(0.85); box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
 
+        /* ================= TÍTULOS E CABEÇALHOS ================= */
+        header, .header-enc { background: var(--insta-gradient); color: var(--header-text); padding: 15px 20px; display: flex; align-items: center; justify-content: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.1); min-height: 70px; width: 100%; box-sizing: border-box; overflow: visible; }
+        
+        .header-titles { display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; user-select: none; padding: 0 45px; width: 100%; box-sizing: border-box; z-index: 10; }
+        header h1, .header-enc h1 { margin: 0; font-family: 'Grand Hotel', cursive !important; font-size: 32px !important; font-weight: 400 !important; letter-spacing: 1px; color: var(--header-text); text-transform: none !important;}
+        .app-subtitle { font-size: 13px; font-family: 'Inter', sans-serif; font-weight: 500; opacity: 0.95; margin-top: 2px; text-align: center; color: var(--header-text); letter-spacing: 0.5px; display: none; }
+
+        .header-btn-gear { background: transparent; border: none; color: var(--header-text); cursor: pointer; display: none; transition: transform 0.2s; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); z-index: 9999; width: 44px; height: 44px; align-items: center; justify-content: center; border-radius: 50%; }
+        .header-btn-gear svg { width: 24px; height: 24px; display: block; }
+        .header-btn-gear:active { transform: translateY(-50%) scale(0.85); }
+
         /* ================= TELA DELIVERY ================= */
         #produtos-screen { display: none; padding-bottom: 130px; }
-
-        header { background: var(--insta-gradient); color: var(--header-text); padding: 20px; display: flex; align-items: center; justify-content: center; position: relative; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        header h1 { margin: 0; font-size: 1.4rem; letter-spacing: 2px; cursor: pointer; user-select: none; font-weight: 800; color: var(--header-text); }
-
-        .header-btn-gear { background: none; border: none; color: var(--header-text); cursor: pointer; display: none; padding: 5px; transition: transform 0.2s; position: absolute; right: 20px; }
-        .header-btn-gear:active { transform: scale(0.85); }
 
         .loja-header { position: relative; background: #fff; padding-bottom: 50px; margin-bottom: 40px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
         .cover-photo { width: 100%; height: 180px; background: #eee url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="none"><rect width="100%" height="100%" fill="%23f0f0f0"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="14" fill="%23ccc">Sem Capa</text></svg>') center/cover; position: relative; }
@@ -166,22 +171,18 @@
         .btn-insta-link { background: none; border: none; color: var(--text-secondary); font-weight: bold; padding: 10px; width: 100%; font-size: 0.9rem; cursor: pointer;}
         .btn-danger { background: #ed4956 !important; color: white !important; border: none !important; }
         
-        #insta-modal-overlay { z-index: 99999 !important; }
+        #insta-modal-overlay { z-index: 1000001 !important; }
 
-        /* Ajuste Cirúrgico: Comprovante aparecendo na frente de tudo e preenchendo certo */
-        #img-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 999999; flex-direction: column; justify-content: center; align-items: center; }
+        #img-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000002 !important; flex-direction: column; justify-content: center; align-items: center; }
         .modal-close { position: absolute; top: 20px; right: 20px; color: white; font-size: 32px; font-weight: bold; cursor: pointer; z-index: 2001; }
         .slider-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; width: 100%; max-width: 500px; scrollbar-width: none; align-items: center; justify-content: center;}
         .slider-container::-webkit-scrollbar { display: none; }
         .slider-container img { flex: 0 0 100%; max-width: 100vw; scroll-snap-align: center; max-height: 85vh; border-radius: 10px; padding: 0 10px; object-fit: contain; }
         .slider-container embed { flex: 0 0 100%; max-height: 85vh; border-radius: 10px; }
 
-        /* ================= TELA ENCOMENDAS (REFORMULADA) ================= */
+        /* ================= TELA ENCOMENDAS ================= */
         #encomendas-screen { display: none; background-color: #fafafa; min-height: 100vh; }
         .app-container { width: 100%; max-width: 414px; background-color: #ffffff; min-height: 100vh; box-shadow: 0 0 20px rgba(0,0,0,0.1); position: relative; padding-bottom: 160px; margin: 0 auto;}
-        
-        .header-enc { display: flex; align-items: center; justify-content: center; height: 60px; background: var(--insta-gradient); position: sticky; top: 0; z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.1);}
-        .header-enc h1 { font-family: 'Grand Hotel', cursive; font-size: 32px; font-weight: 400; letter-spacing: 1px; color: var(--header-text); cursor: pointer; user-select: none; }
         
         /* Stepper - Timeline Horizontal */
         .stepper-container { display: flex; overflow-x: auto; padding: 15px 20px; background: #fff; border-bottom: 1px solid #efefef; scrollbar-width: none; white-space: nowrap; gap: 20px; align-items: center;}
@@ -273,7 +274,8 @@
 </div>
 
 <div id="home-screen">
-    <h1 class="home-title" id="app-name-home">Carregando...</h1>
+    <h1 class="home-title" id="app-name-home" style="margin-bottom: 5px;">Carregando...</h1>
+    <div class="app-subtitle" id="app-subtitle-home" style="margin-bottom: 40px; color: var(--header-text); text-shadow: 0 4px 10px rgba(0,0,0,0.1);"></div>
     <button class="btn-home" onclick="navTo('produtos')">Delivery</button>
     <button class="btn-home" onclick="navTo('encomendas')">Encomendas</button>
     <button class="btn-home" onclick="window.location.href='https://share.google/V5mK11fYc07tWWEqM'">Avaliação</button>
@@ -281,9 +283,12 @@
 
 <div id="produtos-screen">
     <header>
-        <h1 onclick="handleTitleClick()" id="app-name-produtos">CARREGANDO...</h1>
+        <div class="header-titles" onclick="handleTitleClick()">
+            <h1 id="app-name-produtos">Carregando...</h1>
+            <div id="app-subtitle-produtos" class="app-subtitle"></div>
+        </div>
         <button class="header-btn-gear" id="btn-gear-whats" onclick="abrirWhatsConfig()" title="Configurar WhatsApp">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
         </button>
     </header>
 
@@ -423,6 +428,10 @@
             <h3 style="margin-bottom: 15px; font-size: 16px; color: var(--insta-blue);">⚙️ Configurações da Loja</h3>
             <label style="font-size:12px; font-weight:bold; color:#555;">Nome do App/Loja</label>
             <input type="text" id="cfg-nome-loja" placeholder="Ex: Dessa's Cake" style="margin-bottom: 15px;">
+            
+            <label style="font-size:12px; font-weight:bold; color:#555;">Subtítulo (Opcional)</label>
+            <input type="text" id="cfg-subtitulo" placeholder="Ex: A melhor confeitaria da região" style="margin-bottom: 15px;">
+
             <label style="font-size:12px; font-weight:bold; color:#555;">Dias de Funcionamento</label>
             <div style="display:flex; gap:10px; margin-bottom:15px; flex-wrap:wrap;">
                 <label><input type="checkbox" id="dia-0" value="0"> Dom</label>
@@ -462,9 +471,12 @@
 <div id="encomendas-screen">
     <div class="app-container">
         <header class="header-enc">
-            <h1 id="app-name-encomendas" onclick="handleTitleClick()">Carregando...</h1>
-            <button class="header-btn-gear" id="btn-gear-whats-enc" onclick="abrirWhatsConfig()" title="Configurar WhatsApp" style="display: none;">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            <div class="header-titles" onclick="handleTitleClick()">
+                <h1 id="app-name-encomendas">Carregando...</h1>
+                <div id="app-subtitle-encomendas" class="app-subtitle"></div>
+            </div>
+            <button class="header-btn-gear" id="btn-gear-whats-enc" onclick="abrirWhatsConfig()" title="Configurar WhatsApp">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
             </button>
         </header>
 
@@ -645,13 +657,13 @@
         if(screen === 'home') document.getElementById('home-screen').style.display = 'flex';
         if(screen === 'produtos') {
             document.getElementById('produtos-screen').style.display = 'block';
-            document.getElementById('btn-gear-whats').style.display = hasWhats ? 'block' : 'none';
+            document.getElementById('btn-gear-whats').style.display = hasWhats ? 'flex' : 'none';
             if(!hasWhats) document.getElementById('whats-overlay').style.display = 'flex';
             renderMenu(); 
         }
         if(screen === 'encomendas') {
             document.getElementById('encomendas-screen').style.display = 'block';
-            document.getElementById('btn-gear-whats-enc').style.display = hasWhats ? 'block' : 'none';
+            document.getElementById('btn-gear-whats-enc').style.display = hasWhats ? 'flex' : 'none';
             iniciarEncomendaFlow();
         }
         window.scrollTo(0,0);
@@ -747,7 +759,7 @@
     function closeOverlay(id) { document.getElementById(id).style.display = 'none'; }
     function salvarWhatsLocal() {
         const tel = document.getElementById('user-whats-input').value;
-        if(tel.length > 8) { localStorage.setItem('cliente_whats', tel); document.getElementById('btn-gear-whats').style.display = 'block'; document.getElementById('btn-gear-whats-enc').style.display = 'block'; closeOverlay('whats-overlay'); } else showInstaModal("Aviso", "Digite um número válido!", "⚠️");
+        if(tel.length > 8) { localStorage.setItem('cliente_whats', tel); document.getElementById('btn-gear-whats').style.display = 'flex'; document.getElementById('btn-gear-whats-enc').style.display = 'flex'; closeOverlay('whats-overlay'); } else showInstaModal("Aviso", "Digite um número válido!", "⚠️");
     }
     function abrirWhatsConfig() { document.getElementById('edit-whats-input').value = localStorage.getItem('cliente_whats') || ''; document.getElementById('whats-config-overlay').style.display = 'flex'; }
     function atualizarWhatsLocal() {
@@ -768,10 +780,11 @@
             document.getElementById('btn-admin-comandas').style.display = 'flex'; 
             closeOverlay('login-overlay'); 
             renderMenu(); 
-            renderTabelaIngredientesAdmin(); // Renderiza imediatamente
-            renderDatasBloqueadasAdmin();    // Renderiza imediatamente
+            renderTabelaIngredientesAdmin(); 
+            renderDatasBloqueadasAdmin();    
             showInstaModal('Bem-vinda!', 'Modo administrador ativado.', '👩‍🍳');
             if(storeConfig.nomeLoja) document.getElementById('cfg-nome-loja').value = storeConfig.nomeLoja;
+            if(storeConfig.subtitulo) document.getElementById('cfg-subtitulo').value = storeConfig.subtitulo;
         } else showInstaModal('Erro', 'Senha incorreta.', '❌');
     }
 
@@ -779,14 +792,34 @@
         if(snap.val()) {
             storeConfig = snap.val();
             
-            // App Name Dinâmico
+            // App Name e Subtítulo Dinâmico
             const nomeExibicao = storeConfig.nomeLoja || "Dessa's Cake";
+            const subExibicao = storeConfig.subtitulo || "";
+
             document.getElementById('app-title').innerText = nomeExibicao + " | App";
             document.getElementById('app-name-home').innerText = nomeExibicao;
-            document.getElementById('app-name-produtos').innerText = nomeExibicao.toUpperCase();
+            document.getElementById('app-name-produtos').innerText = nomeExibicao;
             document.getElementById('app-name-encomendas').innerText = nomeExibicao;
             document.getElementById('loading-text-dyn').innerText = nomeExibicao;
-            if(isAdmin) document.getElementById('cfg-nome-loja').value = storeConfig.nomeLoja || '';
+            
+            document.getElementById('app-subtitle-home').innerText = subExibicao;
+            document.getElementById('app-subtitle-produtos').innerText = subExibicao;
+            document.getElementById('app-subtitle-encomendas').innerText = subExibicao;
+
+            if (subExibicao === "") {
+                document.getElementById('app-subtitle-home').style.display = 'none';
+                document.getElementById('app-subtitle-produtos').style.display = 'none';
+                document.getElementById('app-subtitle-encomendas').style.display = 'none';
+            } else {
+                document.getElementById('app-subtitle-home').style.display = 'block';
+                document.getElementById('app-subtitle-produtos').style.display = 'block';
+                document.getElementById('app-subtitle-encomendas').style.display = 'block';
+            }
+
+            if(isAdmin) {
+                document.getElementById('cfg-nome-loja').value = storeConfig.nomeLoja || '';
+                document.getElementById('cfg-subtitulo').value = storeConfig.subtitulo || '';
+            }
 
             if(storeConfig.cover) { 
                 document.getElementById('display-cover').src = storeConfig.cover; document.getElementById('display-cover').style.display = 'block'; 
@@ -836,11 +869,17 @@
     async function salvarConfigLoja() {
         const payload = {}, coverF = document.getElementById('cfg-cover').files[0], profF = document.getElementById('cfg-profile').files[0];
         const nomeL = document.getElementById('cfg-nome-loja').value;
+        const subL = document.getElementById('cfg-subtitulo').value;
+        
         if(nomeL) payload.nomeLoja = nomeL;
+        payload.subtitulo = subL || "";
+        
         if(document.getElementById('cfg-open').value) payload.open = document.getElementById('cfg-open').value;
         if(document.getElementById('cfg-close').value) payload.close = document.getElementById('cfg-close').value;
         payload.dias = [0,1,2,3,4,5,6].filter(i => document.getElementById('dia-'+i).checked);
+        
         if(coverF) payload.cover = await resizeCoverImage(coverF); if(profF) payload.profile = await cropImageTo1x1(profF);
+        
         document.getElementById('btn-save-cfg').innerText = "SALVANDO..."; document.getElementById('btn-save-cfg').disabled = true;
         db.ref('config').update(payload).then(() => { document.getElementById('btn-save-cfg').innerText = "SALVAR LOJA"; document.getElementById('btn-save-cfg').disabled = false; showInstaModal('Sucesso', 'Configurações atualizadas.', '⚙️'); });
     }
@@ -913,7 +952,6 @@
         renderCalendarAdmin();
     }
 
-    // Ajuste Cirúrgico: Função auxiliar para gerar os cards das comandas para não duplicar código
     function gerarCardComanda(p) {
         let htmlI = ''; if(p.itens) for(let i in p.itens) htmlI+=`<div class="comanda-item"><b>${p.itens[i].qtd}x</b> ${p.itens[i].nome}</div>`;
         let dStr = p.dataAgendada ? p.dataAgendada.split('-').reverse().join('/') : new Date(p.timestamp).toLocaleDateString('pt-BR');
@@ -961,7 +999,7 @@
         });
 
         const daysInMonth = new Date(currentCalYear, currentCalMonth + 1, 0).getDate();
-        const firstDay = new Date(currentCalYear, currentCalMonth, 1).getDay(); // 0-6 (Sun-Sat)
+        const firstDay = new Date(currentCalYear, currentCalMonth, 1).getDay();
 
         let calHtml = `<div class="calendar-header">
             <select id="cal-month" onchange="changeCalMonth(this.value)">
@@ -996,18 +1034,16 @@
             </div>`;
         }
         
-        // Ajuste Cirúrgico: Mostrar TODAS as comandas por padrão, ao invés de apenas mandar clicar no dia.
         calHtml += `</div><div id="day-comandas-container" style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px;">`;
-        calHtml += `<h4 style="margin-bottom:10px; color: var(--text-main);">Todas as Comandas</h4>`;
-        
-        if (comandas.length === 0) {
-            calHtml += `<p style="color:#8e8e8e; text-align:center; font-size:14px;">Nenhuma comanda encontrada.</p>`;
-        } else {
-            comandas.forEach(p => { calHtml += gerarCardComanda(p); });
-        }
-        
+        calHtml += `<p style="color:#8e8e8e; text-align:center; font-size:14px; margin-top: 20px;">Selecione um dia no calendário para ver as comandas agendadas.</p>`;
         calHtml += `</div>`;
+        
         listDiv.innerHTML = calHtml;
+
+        // Auto-selecionar o dia de hoje para exibir logo de cara as comandas do dia
+        const hoje = new Date();
+        const hjStr = `${hoje.getFullYear()}-${String(hoje.getMonth()+1).padStart(2,'0')}-${String(hoje.getDate()).padStart(2,'0')}`;
+        setTimeout(() => { showComandasForDay(hjStr); }, 100);
     }
 
     function changeCalMonth(m) { currentCalMonth = parseInt(m); renderCalendarAdmin(); }
@@ -1015,15 +1051,15 @@
 
     function showComandasForDay(dateStr) {
         const container = document.getElementById('day-comandas-container');
+        if(!container) return;
         const orders = groupedComandas[dateStr] || [];
         
         let html = `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
                         <h4 style="color: var(--text-main);">Comandas de ${dateStr.split('-').reverse().join('/')}</h4>
-                        <button class="btn-insta-link" style="width:auto; padding:5px; border: 1px solid #eee; border-radius: 5px; font-size:12px;" onclick="renderCalendarAdmin()">Ver Todas</button>
                     </div>`;
 
         if(orders.length === 0) {
-            html += `<p style="color:#8e8e8e; text-align:center; font-size:14px;">Nenhum agendamento para essa data.</p>`;
+            html += `<p style="color:#8e8e8e; text-align:center; font-size:14px;">Nenhuma comanda para essa data.</p>`;
         } else {
             orders.forEach(p => { html += gerarCardComanda(p); });
         }
@@ -1167,6 +1203,20 @@
     function iniciarEncomendaFlow() {
         currentStepIdx = 0; encData = { peso: "1", massa: null, recheio: null, cobertura: null, adicional: null, comprovante: null };
         document.querySelectorAll('input[name="enc_peso"]').forEach(r => { if(r.value==="1") { r.checked=true; r.parentElement.classList.add('selected'); } else r.parentElement.classList.remove('selected'); });
+        
+        if(document.getElementById('enc_nome')) document.getElementById('enc_nome').value = '';
+        if(document.getElementById('enc_tipo')) document.getElementById('enc_tipo').value = 'Retirada';
+        if(document.getElementById('enc_end_box')) document.getElementById('enc_end_box').style.display = 'none';
+        if(document.getElementById('enc_end')) document.getElementById('enc_end').value = '';
+        if(document.getElementById('enc_data')) document.getElementById('enc_data').value = '';
+        if(document.getElementById('enc_hora')) document.getElementById('enc_hora').value = '';
+        if(document.getElementById('enc_comprovante')) document.getElementById('enc_comprovante').value = '';
+        
+        let boxComp = document.getElementById('box-comprovante');
+        if(boxComp) boxComp.classList.remove('success');
+        let txtComp = document.getElementById('txt-comprovante');
+        if(txtComp) { txtComp.innerText = 'Clique para anexar o Comprovante'; txtComp.style.color = '#8e8e8e'; }
+        
         atualizarUIEtapas();
     }
 
@@ -1323,7 +1373,6 @@
         const partesData = d.split('-');
         const dataFormatada = `${partesData[2]}/${partesData[1]}/${partesData[0]}`;
 
-        // Pega o nome customizado do Firebase, caso exista
         const nomeLoja = storeConfig.nomeLoja || "Dessa's Cake";
 
         let msg = `*Encomenda ${cId}*\n🎂 *${nomeLoja}*\n\n`;
