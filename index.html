@@ -282,7 +282,7 @@
         .form-group-enc input, .form-group-enc select { width: 100%; padding: 14px; background: #fafafa; border: 1px solid #dbdbdb; border-radius: 8px; font-size: 15px; font-family: 'Inter', sans-serif; transition: border-color 0.2s;}
         .form-group-enc input:focus, .form-group-enc select:focus { outline: none; border-color: var(--insta-blue); }
 
-        /* Comprovante Box */
+        /* Comprovante / MP Box */
         .comprovante-box { border: 2px dashed #dbdbdb; border-radius: 10px; padding: 20px; text-align: center; background: #fafafa; cursor: pointer; transition: 0.3s; position: relative;}
         .comprovante-box:hover { border-color: var(--insta-blue); }
         .comprovante-box input[type="file"] { position: absolute; top:0; left:0; width:100%; height:100%; opacity: 0; cursor: pointer; }
@@ -659,17 +659,15 @@
                 <h2 class="section-title-enc"><span>✦</span> Reserva de Data</h2>
                 <div style="background: #fffdf5; padding: 15px; border-radius: 8px; border: 1px solid #FFB300; margin-bottom: 20px;">
                     <p style="font-size: 14px; color: #555; margin-bottom: 10px;">
-                        Para garantir sua encomenda e reservar esta data exclusivamenta para você, é necessário o pagamento de <b>50% do valor total</b> via Pix.
+                        Para garantir sua encomenda e reservar esta data exclusivamenta para você, é necessário o pagamento de <b>50% do valor total</b> via Mercado Pago.
                     </p>
                     <h3 style="color: var(--insta-gradient); margin-bottom: 5px;">Valor do Sinal (50%):</h3>
                     <div id="enc-sinal-display" style="font-size: 24px; font-weight: 800; color: var(--insta-blue);">R$ 0,00</div>
-                    <p style="font-size: 13px; color: #8e8e8e; margin-top: 10px;">Chave PIX: <b>(15) 98146-3360</b></p>
                 </div>
 
-                <div class="comprovante-box" id="box-comprovante">
-                    <input type="file" id="enc_comprovante" accept="image/*,application/pdf" onchange="processarComprovante(this)">
-                    <div style="font-size: 30px; margin-bottom: 5px;">📄</div>
-                    <div class="comprovante-txt" id="txt-comprovante">Clique para anexar o Comprovante</div>
+                <div class="comprovante-box" id="box-mp" onclick="gerarPagamentoMP()" style="background: var(--insta-gradient); color: var(--header-text); border: none; box-shadow: 0 8px 25px rgba(0,0,0,0.15); border-radius: 15px;">
+                    <div style="font-size: 30px; margin-bottom: 5px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));">💳</div>
+                    <div class="comprovante-txt" id="txt-mp" style="color: var(--header-text); font-weight: 800; font-size: 16px; text-transform: uppercase; letter-spacing: 1px;">Pagar Sinal Agora</div>
                 </div>
             </div>
         </main>
@@ -700,6 +698,36 @@
     };
     if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
     const db = firebase.database();
+
+    let skipHomeTransition = false;
+
+    // Verificação Automática do Mercado Pago ao carregar a página
+    window.addEventListener('load', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const status = urlParams.get('collection_status');
+        
+        if (status === 'approved') {
+            skipHomeTransition = true;
+            document.getElementById('loading-text-dyn').innerText = "Aprovando...";
+            setTimeout(() => {
+                recuperarEFinalizarPedidoMP();
+            }, 1000);
+        } else if (status) {
+            skipHomeTransition = true; // Impede que o timer padrao jogue pra home
+            document.getElementById('loading-screen').style.display = 'none';
+            
+            navTo('encomendas', true); // Vai para tela de encomendas sem resetar os dados
+            
+            if(restaurarEstadoEncomenda()) {
+                currentStepIdx = 6; // Pula cirurgicamente para a etapa 7 (indice 6 - Pagamento)
+                atualizarUIEtapas();
+            }
+
+            showInstaModal('Aviso', 'O pagamento pelo Mercado Pago não foi concluído ou ainda está pendente.', '⚠️');
+            // Limpa a URL sem dar refresh
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    });
 
     // Banco de Versículos (ONBV)
     const versiculosONBV = [
@@ -765,14 +793,16 @@
                 document.getElementById('loading-screen').style.opacity = '0';
                 setTimeout(() => { 
                     document.getElementById('loading-screen').style.display = 'none'; 
-                    document.getElementById('home-screen').style.display = 'flex';
+                    if(!skipHomeTransition) {
+                        document.getElementById('home-screen').style.display = 'flex';
+                    }
                 }, 500);
                 isDataLoaded = true;
             }, 1500); 
         }
     });
 
-    function navTo(screen) {
+    function navTo(screen, isRestoring = false) {
         document.getElementById('home-screen').style.display = 'none';
         document.getElementById('produtos-screen').style.display = 'none';
         document.getElementById('encomendas-screen').style.display = 'none';
@@ -789,7 +819,7 @@
         if(screen === 'encomendas') {
             document.getElementById('encomendas-screen').style.display = 'block';
             document.getElementById('btn-gear-whats-enc').style.display = hasWhats ? 'flex' : 'none';
-            iniciarEncomendaFlow();
+            if(!isRestoring) iniciarEncomendaFlow();
         }
         window.scrollTo(0,0);
     }
@@ -1392,12 +1422,6 @@
         if(document.getElementById('enc_end')) document.getElementById('enc_end').value = '';
         if(document.getElementById('enc_data')) document.getElementById('enc_data').value = '';
         if(document.getElementById('enc_hora')) document.getElementById('enc_hora').value = '';
-        if(document.getElementById('enc_comprovante')) document.getElementById('enc_comprovante').value = '';
-        
-        let boxComp = document.getElementById('box-comprovante');
-        if(boxComp) boxComp.classList.remove('success');
-        let txtComp = document.getElementById('txt-comprovante');
-        if(txtComp) { txtComp.innerText = 'Clique para anexar o Comprovante'; txtComp.style.color = '#8e8e8e'; }
         
         atualizarUIEtapas();
     }
@@ -1422,8 +1446,8 @@
             if(document.getElementById('enc_tipo').value === 'Entrega' && !document.getElementById('enc_end').value) return showInstaModal('Aviso', "Preencha o endereço.", '⚠️');
         }
         if(s==='pagamento') {
-            finalizarEncomendaFirebase();
-            return;
+            // Se chegou no final sem pagar, exibe um alerta
+            return showInstaModal('Atenção', 'Você precisa gerar e pagar o sinal de 50% através do Mercado Pago para concluir a sua reserva.', '💳');
         }
 
         if(currentStepIdx < stepsEnc.length - 1) { currentStepIdx++; atualizarUIEtapas(); }
@@ -1478,6 +1502,45 @@
         renderList('adicional', 'lista-adicionais', 'adicional');
     }
 
+    function restaurarEstadoEncomenda() {
+        const savedData = localStorage.getItem('tempEncData');
+        if(!savedData) return false;
+
+        try {
+            encData = JSON.parse(savedData);
+            encTotalAtual = parseFloat(localStorage.getItem('tempEncTotal'));
+
+            // Restaura os inputs visuais
+            document.getElementById('enc_nome').value = localStorage.getItem('tempEncNome') || '';
+            document.getElementById('enc_tipo').value = localStorage.getItem('tempEncTipo') || 'Retirada';
+            document.getElementById('enc_end').value = localStorage.getItem('tempEncEnd') || '';
+            document.getElementById('enc_data').value = localStorage.getItem('tempEncDataStr') || '';
+            document.getElementById('enc_hora').value = localStorage.getItem('tempEncHora') || '';
+
+            if (document.getElementById('enc_tipo').value === 'Entrega') {
+                document.getElementById('enc_end_box').style.display = 'block';
+            }
+
+            // Restaura a selecao dos botoes de peso
+            document.querySelectorAll('input[name="enc_peso"]').forEach(r => {
+                if(r.value === String(encData.peso)) {
+                    r.checked = true;
+                    r.parentElement.classList.add('selected');
+                } else {
+                    r.parentElement.classList.remove('selected');
+                }
+            });
+
+            // Restaura visualmente os valores recuperados para evitar que zerem antes do Firebase conectar
+            document.getElementById('enc-total-display').innerText = formatPrice(encTotalAtual);
+            document.getElementById('enc-sinal-display').innerText = formatPrice(encTotalAtual / 2);
+
+            return true;
+        } catch(e) {
+            return false;
+        }
+    }
+
     function atualizarUIEtapas() {
         stepsEnc.forEach((s, i) => {
             const stepEl = document.getElementById(`st-${s}`);
@@ -1506,6 +1569,8 @@
 
     let encTotalAtual = 0;
     function calcularTotalEncomenda() {
+        if (!encConfig.ingredientes || Object.keys(encConfig.ingredientes.massa).length === 0) return; // Evita zerar enquanto o firebase carrega
+        
         let totalIng = 0;
         const p = String(encData.peso);
         
@@ -1531,66 +1596,117 @@
         }
     }
 
-    async function processarComprovante(input) {
-        if(input.files && input.files[0]) {
-            encData.comprovante = await getBase64(input.files[0]);
-            document.getElementById('box-comprovante').classList.add('success');
-            document.getElementById('txt-comprovante').innerText = "Comprovante Anexado com Sucesso! ✅";
-            document.getElementById('txt-comprovante').style.color = "#4CAF50";
+    // ================= INTEGRAÇÃO MERCADO PAGO =================
+    async function gerarPagamentoMP() {
+        const sinal = encTotalAtual / 2;
+        const token = "APP_USR-492975771390927-043013-9e07faa7f6b49f56b1a945784258a057-1370551812";
+        
+        // Salva os dados no localStorage para recuperar quando a pessoa voltar do pagamento
+        localStorage.setItem('tempEncData', JSON.stringify(encData));
+        localStorage.setItem('tempEncTotal', encTotalAtual);
+        localStorage.setItem('tempEncNome', document.getElementById('enc_nome').value);
+        localStorage.setItem('tempEncTipo', document.getElementById('enc_tipo').value);
+        localStorage.setItem('tempEncEnd', document.getElementById('enc_end').value);
+        localStorage.setItem('tempEncDataStr', document.getElementById('enc_data').value);
+        localStorage.setItem('tempEncHora', document.getElementById('enc_hora').value);
+
+        try {
+            document.getElementById('txt-mp').innerText = "Gerando Pagamento...";
+            const res = await fetch("https://api.mercadopago.com/checkout/preferences", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    items: [{
+                        title: "Sinal Encomenda (50%) - " + (storeConfig.nomeLoja || "Dessa's Food"),
+                        quantity: 1,
+                        currency_id: "BRL",
+                        unit_price: Number(sinal.toFixed(2))
+                    }],
+                    back_urls: {
+                        success: "https://andressavalerioofc.github.io/AndressaValerio/",
+                        failure: "https://andressavalerioofc.github.io/AndressaValerio/",
+                        pending: "https://andressavalerioofc.github.io/AndressaValerio/"
+                    },
+                    auto_return: "approved"
+                })
+            });
+            
+            const data = await res.json();
+            if(data.init_point) {
+                // Redireciona o usuário para pagar
+                window.location.href = data.init_point;
+            } else {
+                showInstaModal("Erro MP", "Não foi possível gerar o link do Mercado Pago.", "❌");
+                document.getElementById('txt-mp').innerText = "Pagar Sinal Agora";
+            }
+        } catch(e) {
+            showInstaModal("Erro", "Falha de conexão com a API do Mercado Pago. (Isso pode ser um bloqueio de segurança CORS do navegador).", "❌");
+            document.getElementById('txt-mp').innerText = "Pagar Sinal Agora";
         }
     }
 
-    function finalizarEncomendaFirebase() {
-        if(!encData.comprovante) return showInstaModal('Atenção', 'Você precisa anexar o comprovante do PIX de 50% para reservar sua data.', '⚠️');
+    function recuperarEFinalizarPedidoMP() {
+        const savedData = localStorage.getItem('tempEncData');
+        if(!savedData) return; // Nenhuma encomenda pendente salva no localStorage
 
-        const n = document.getElementById('enc_nome').value;
-        const t = document.getElementById('enc_tipo').value;
-        const e = document.getElementById('enc_end').value;
-        const d = document.getElementById('enc_data').value;
-        const h = document.getElementById('enc_hora').value;
+        const encDataRecuperada = JSON.parse(savedData);
+        const encTotalRecuperado = parseFloat(localStorage.getItem('tempEncTotal'));
+        const n = localStorage.getItem('tempEncNome');
+        const t = localStorage.getItem('tempEncTipo');
+        const e = localStorage.getItem('tempEncEnd');
+        const d = localStorage.getItem('tempEncDataStr');
+        const h = localStorage.getItem('tempEncHora');
         const w = localStorage.getItem('cliente_whats') || '';
         
-        const cId = `ENC#${n.charAt(0)}${d.replace(/-/g,'').slice(-4)}${Math.floor(encTotalAtual)}${w.replace(/\D/g,'').slice(-4)}`;
-
+        const cId = `ENC#${n.charAt(0)}${d.replace(/-/g,'').slice(-4)}${Math.floor(encTotalRecuperado)}${w.replace(/\D/g,'').slice(-4)}`;
         const partesData = d.split('-');
         const dataFormatada = `${partesData[2]}/${partesData[1]}/${partesData[0]}`;
-
         const nomeLoja = storeConfig.nomeLoja || "Dessa's Food";
 
         let msg = `*Encomenda ${cId}*\n🎂 *${nomeLoja}*\n\n`;
         msg += `*👤 CLIENTE:*\nNome: ${n}\nTipo: ${t}\n`;
         if(t === 'Entrega') msg += `Endereço: ${e}\n`;
         msg += `Agendado: ${dataFormatada} às ${h}\n\n`;
-        msg += `*🎂 DETALHES DO BOLO:*\n- Peso: ${encData.peso}kg\n- Massa: ${encData.massa}\n- Recheio: ${encData.recheio}\n- Cobertura: ${encData.cobertura||'Nenhum'}\n- Adicional: ${encData.adicional||'Nenhum'}\n\n`;
-        msg += `*🧾 VALORES:*\nTotal: ${formatPrice(encTotalAtual)}\nSinal Pago (50%): ${formatPrice(encTotalAtual/2)}\n\n`;
-        msg += `*O comprovante foi salvo no App e anexado à sua comanda!* Aguardo a confirmação do pedido!`;
+        msg += `*🎂 DETALHES DO BOLO:*\n- Peso: ${encDataRecuperada.peso}kg\n- Massa: ${encDataRecuperada.massa}\n- Recheio: ${encDataRecuperada.recheio}\n- Cobertura: ${encDataRecuperada.cobertura||'Nenhum'}\n- Adicional: ${encDataRecuperada.adicional||'Nenhum'}\n\n`;
+        msg += `*🧾 VALORES:*\nTotal: ${formatPrice(encTotalRecuperado)}\nSinal Pago (50%): ${formatPrice(encTotalRecuperado/2)}\n\n`;
+        msg += `✅ *PAGAMENTO APROVADO VIA MERCADO PAGO*\n\n`;
+        msg += `Aguardo a confirmação final do pedido!`;
 
-        // CORREÇÃO: Enviando todos os detalhes individualmente para salvar no banco
         const detalhesParaFirebase = {
             comandaId: cId, cliente: n, whatsapp: w, tipo: 'Encomenda (' + t + ')',
-            endereco: t === 'Entrega' ? e : '', pagamento: 'PIX (50%)', total: encTotalAtual,
+            endereco: t === 'Entrega' ? e : '', pagamento: 'Mercado Pago (Aprovado)', total: encTotalRecuperado,
             itens: [ 
                 { 
-                    nome: `Bolo ${encData.peso}kg`, 
-                    massa: encData.massa, 
-                    recheio: encData.recheio, 
-                    cobertura: encData.cobertura || 'Nenhum', 
-                    adicional: encData.adicional || 'Nenhum', 
+                    nome: `Bolo ${encDataRecuperada.peso}kg`, 
+                    massa: encDataRecuperada.massa, 
+                    recheio: encDataRecuperada.recheio, 
+                    cobertura: encDataRecuperada.cobertura || 'Nenhum', 
+                    adicional: encDataRecuperada.adicional || 'Nenhum', 
                     qtd: 1, 
-                    preco: formatPrice(encTotalAtual) 
+                    preco: formatPrice(encTotalRecuperado) 
                 }
             ],
-            dataAgendada: d, horaAgendada: h, comprovante: encData.comprovante, status: 'Pendente', timestamp: Date.now()
+            dataAgendada: d, horaAgendada: h, comprovante: "Pagamento Via Link Checkout Pro MP", status: 'Pendente', timestamp: Date.now()
         };
 
         db.ref('pedidos').push(detalhesParaFirebase).then(() => {
-            // BLOQUEIO AUTOMÁTICO REMOVIDO DAQUI
-            // Para permitir comandas ilimitadas no mesmo dia sem restrição para você.
+            // Limpa as variáveis temporárias para não duplicar envios se o cliente atualizar a página
+            localStorage.removeItem('tempEncData');
+            localStorage.removeItem('tempEncTotal');
+            localStorage.removeItem('tempEncNome');
+            localStorage.removeItem('tempEncTipo');
+            localStorage.removeItem('tempEncEnd');
+            localStorage.removeItem('tempEncDataStr');
+            localStorage.removeItem('tempEncHora');
+            
+            // Limpa a URL e envia pro whats
+            window.history.replaceState({}, document.title, window.location.pathname);
             window.location.href = `https://api.whatsapp.com/send?phone=5515991422218&text=${encodeURIComponent(msg)}`;
-            navTo('home'); 
         });
     }
-
 </script>
 </body>
 </html>
