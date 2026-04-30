@@ -133,8 +133,8 @@
         .cal-order-count { position: absolute; top: -6px; right: -6px; background: var(--insta-blue); color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
         .cal-day.empty { border: none; background: transparent; cursor: default; }
 
-        .cardapio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px; max-width: 600px; margin: 0 auto; }
-        .card { background: white; border-radius: 15px; border: 2px solid #efefef; position: relative; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; box-shadow: 0 2px 8px rgba(0,0,0,0.04);}
+        .cardapio-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 15px; width: 100%; box-sizing: border-box; margin: 0 auto; max-width: 600px; }
+        .card { background: white; border-radius: 15px; border: 2px solid #efefef; position: relative; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; box-shadow: 0 2px 8px rgba(0,0,0,0.04); width: 100%; overflow: hidden;}
         .card.selected { border: 2px solid var(--seafoam); background: #fffdf5; }
         .card.esgotado { filter: grayscale(100%); opacity: 0.8; }
         .card.loja-fechada-fx { filter: grayscale(100%); opacity: 0.7; }
@@ -171,9 +171,9 @@
         .btn-insta-link { background: none; border: none; color: var(--text-secondary); font-weight: bold; padding: 10px; width: 100%; font-size: 0.9rem; cursor: pointer;}
         .btn-danger { background: #ed4956 !important; color: white !important; border: none !important; }
         
-        #insta-modal-overlay { z-index: 1000001 !important; }
+        #insta-modal-overlay { z-index: 1000005 !important; } /* Aumentado para não ficar atrás do popup do dia */
 
-        #img-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000002 !important; flex-direction: column; justify-content: center; align-items: center; }
+        #img-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000010 !important; flex-direction: column; justify-content: center; align-items: center; }
         .modal-close { position: absolute; top: 20px; right: 20px; color: white; font-size: 32px; font-weight: bold; cursor: pointer; z-index: 2001; }
         .slider-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; width: 100%; max-width: 500px; scrollbar-width: none; align-items: center; justify-content: center;}
         .slider-container::-webkit-scrollbar { display: none; }
@@ -273,6 +273,17 @@
     <div class="slider-container" id="modal-slider"></div>
 </div>
 
+<div id="day-comandas-overlay" class="insta-overlay" style="z-index: 1000002 !important;">
+    <div class="insta-popup" style="max-width: 400px; width: 95%; max-height: 85vh; display: flex; flex-direction: column; padding: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <div id="day-comandas-title" style="font-weight: 800; font-size: 1.2rem; color: var(--text-main);">Comandas</div>
+            <div onclick="closeOverlay('day-comandas-overlay')" style="cursor: pointer; font-size: 1.2rem; font-weight: bold; color: #8e8e8e;">✕</div>
+        </div>
+        <div id="day-comandas-content" style="text-align: left; overflow-y: auto; flex-grow: 1;">
+        </div>
+    </div>
+</div>
+
 <div id="home-screen">
     <h1 class="home-title" id="app-name-home" style="margin-bottom: 5px;">Carregando...</h1>
     <div class="app-subtitle" id="app-subtitle-home" style="margin-bottom: 40px; color: var(--header-text); text-shadow: 0 4px 10px rgba(0,0,0,0.1);"></div>
@@ -288,7 +299,11 @@
             <div id="app-subtitle-produtos" class="app-subtitle"></div>
         </div>
         <button class="header-btn-gear" id="btn-gear-whats" onclick="abrirWhatsConfig()" title="Configurar WhatsApp">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
         </button>
     </header>
 
@@ -417,10 +432,6 @@
             
             <div id="admin-ing-list" style="margin-top:15px; max-height:200px; overflow-y:auto; border:1px solid #eee; padding:10px; border-radius:8px;"></div>
 
-            <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
-            <label style="font-size:12px; font-weight:bold; color:#555;">Datas Bloqueadas (Reservadas)</label>
-            <div id="admin-datas-bloqueadas" style="display:flex; flex-wrap:wrap; gap:5px; margin-top:10px;"></div>
-
             <button class="btn-postar" onclick="salvarConfigEncomendaGeral()" style="background: #333; color: white; margin-top:20px;">SALVAR CONFIG GERAIS (%)</button>
         </div>
 
@@ -476,7 +487,11 @@
                 <div id="app-subtitle-encomendas" class="app-subtitle"></div>
             </div>
             <button class="header-btn-gear" id="btn-gear-whats-enc" onclick="abrirWhatsConfig()" title="Configurar WhatsApp">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
             </button>
         </header>
 
@@ -617,7 +632,6 @@
         </button>
     </div>
 </div>
-
 <script>
     // ================= INICIALIZAÇÃO FIREBASE E NAVEGAÇÃO =================
     const firebaseConfig = {
@@ -781,7 +795,6 @@
             closeOverlay('login-overlay'); 
             renderMenu(); 
             renderTabelaIngredientesAdmin(); 
-            renderDatasBloqueadasAdmin();    
             showInstaModal('Bem-vinda!', 'Modo administrador ativado.', '👩‍🍳');
             if(storeConfig.nomeLoja) document.getElementById('cfg-nome-loja').value = storeConfig.nomeLoja;
             if(storeConfig.subtitulo) document.getElementById('cfg-subtitulo').value = storeConfig.subtitulo;
@@ -901,6 +914,7 @@
     function removeCart(id, e) { if(e) e.stopPropagation(); if(cart[id]) { cart[id]--; if(cart[id]<=0) delete cart[id]; renderMenu(); } }
     function atualizarTotalFlutuante() { let tot=0, qtd=0; for(let i in cart){ const it=menuItems.find(x=>x.id===i); if(it) { tot+=parsePrice(it.price)*cart[i]; qtd+=cart[i]; } } const d=document.getElementById('floating-total'); if(qtd>0&&isLojaAberta()){ d.style.display='block'; d.innerText='Total: '+formatPrice(tot); d.classList.remove('pop-anim'); void d.offsetWidth; d.classList.add('pop-anim'); } else d.style.display='none'; }
     function renderFilters() { const con=document.getElementById('filters-container'); con.innerHTML=''; const cats = new Set(menuItems.map(i=>i.category||'Doces')); ['Todos','Doces','Salgados','Bebidas','Outros'].forEach(c=>{ if(c==='Todos'||cats.has(c)){ const btn=document.createElement('button'); btn.className='btn-filter'+(currentCategory===c?' active':''); btn.innerText=c; btn.onclick=()=>{currentCategory=c; renderMenu();}; con.appendChild(btn); } }); }
+    
     function renderMenu() {
         const la = isLojaAberta(), b=document.getElementById('status-loja-badge'); 
         b.innerText=la?"Aberto":"Fechado"; b.className=la?"status-loja status-aberto":"status-loja status-fechado"; 
@@ -910,20 +924,26 @@
 
         document.getElementById('footer-order').style.display=la?'flex':'none'; renderFilters();
         const con=document.getElementById('menu-container'); con.innerHTML="";
+        
         menuItems.forEach(i => {
             if(currentCategory!=='Todos' && (i.category||'Doces')!==currentCategory) return;
             const s=i.status||'Disponível', esg=s==='Esgotado', q=cart[i.id]||0, ext=(i.estoque!==""&&i.estoque!==undefined)?` - Resta ${i.estoque}`:'';
-            let b='<div class="status-badge badge-disponivel">Disponível'+ext+'</div>'; if(esg) b='<div class="status-badge badge-esgotado">Esgotado</div>'; else if(s==='Novo') b='<div class="status-badge badge-novo">Novo ✨'+ext+'</div>';
+            let bHtml='<div class="status-badge badge-disponivel">Disponível'+ext+'</div>'; if(esg) bHtml='<div class="status-badge badge-esgotado">Esgotado</div>'; else if(s==='Novo') bHtml='<div class="status-badge badge-novo">Novo ✨'+ext+'</div>';
+            
+            const imgSrc = (i.imgs && i.imgs.length > 0) ? i.imgs[0] : (i.img || '');
+            
             const html = `
                 ${q>0?`<div class="qty-bubble">${q}</div>`:''}
-                <div class="img-container"><img src="${i.imgs?i.imgs[0]:i.img}" onclick="openImageModal('${i.id}')">${b}</div>
+                <div class="img-container"><img src="${imgSrc}" onclick="openImageModal('${i.id}')">${bHtml}</div>
                 <div class="card-info"><div class="card-title">${i.title}</div><div style="font-size:0.75rem; color:#8e8e8e; margin-top:4px;">${i.desc}</div><div class="card-price">${i.price}</div>
                 ${!esg&&la?`<div class="card-actions">${q>0?`<div class="btn-action minus" onclick="removeCart('${i.id}', event)">-</div>`:''}<div class="btn-action add" onclick="addCart('${i.id}', event)">+</div></div>`:''}</div>
                 ${isAdmin?`<div style="display:flex; border-top:1px solid #eee;"><button onclick="editItem('${i.id}')" style="flex:1; background:#fff; color:var(--insta-blue); border:none; padding:12px; font-weight:bold; border-right:1px solid #eee;">EDITAR</button><button onclick="deleteItem('${i.id}')" style="flex:1; background:#fff; color:#ed4956; border:none; padding:12px; font-weight:bold;">REMOVER</button></div>`:''}
             `;
             const card=document.createElement('div'); card.className=`card ${q>0?'selected':''} ${esg?'esgotado':''} ${!la?'loja-fechada-fx':''}`; card.innerHTML=html; con.appendChild(card);
-        }); atualizarTotalFlutuante();
+        }); 
+        atualizarTotalFlutuante();
     }
+    
     function openImageModal(id){ const it=menuItems.find(i=>i.id===id); if(it){ const sl=document.getElementById('modal-slider'); sl.innerHTML=''; (it.imgs||[it.img]).forEach(s=>{ const img=document.createElement('img'); img.src=s; sl.appendChild(img); }); document.getElementById('img-modal').style.display='flex'; } }
 
     // Checkout Delivery
@@ -935,10 +955,22 @@
         const n=document.getElementById('chk-nome').value, t=document.getElementById('chk-tipo').value, e=document.getElementById('chk-end').value, num=document.getElementById('chk-num').value, p=document.getElementById('chk-pagamento').value, w=localStorage.getItem('cliente_whats')||'';
         if(!n||!t||!p || (t==='Entrega'&&(!e||!num))) return showInstaModal('Aviso','Preencha os campos obrigatórios.','📝');
         const cId=`#${n.charAt(0)}${String(new Date().getDate()).padStart(2,'0')}${String(new Date().getMonth()+1).padStart(2,'0')}${Math.floor(subtotalValor)}${w.replace(/\D/g,'').slice(-4)}`;
-        let itens={}, msg=`*Pedido ${cId}*\n🧁 *Novo Delivery*\n\n*👤* ${n} | ${t} | Pgto: ${p}\n\n*🛍️ DETALHES:*\n`;
-        for(let i in cart) { const it=menuItems.find(x=>x.id===i); if(it) { itens[i]={nome:it.title, preco:it.price, qtd:cart[i]}; msg+=`✅ ${cart[i]}x *${it.title}*\n`; db.ref('cardapio/'+i).once('value').then(s=>{let p=s.val(); if(p&&p.estoque!==""){ let nv=parseInt(p.estoque)-cart[i]; db.ref('cardapio/'+i).update({estoque:nv<=0?0:nv, status:nv<=0?'Esgotado':p.status});}}); } }
+        
+        let itens = []; 
+        let msg=`*Pedido ${cId}*\n🧁 *Novo Delivery*\n\n*👤* ${n} | ${t} | Pgto: ${p}\n\n*🛍️ DETALHES:*\n`;
+        
+        for(let i in cart) { 
+            const it=menuItems.find(x=>x.id===i); 
+            if(it) { 
+                itens.push({ id: i, nome: it.title, preco: it.price, qtd: cart[i] }); 
+                msg+=`✅ ${cart[i]}x *${it.title}*\n`; 
+                db.ref('cardapio/'+i).once('value').then(s=>{let p=s.val(); if(p&&p.estoque!==""){ let nv=parseInt(p.estoque)-cart[i]; db.ref('cardapio/'+i).update({estoque:nv<=0?0:nv, status:nv<=0?'Esgotado':p.status});}}); 
+            } 
+        }
         msg+=`\n*🧾 Total: ${formatPrice(subtotalValor)}*`;
-        db.ref('pedidos').push({comandaId:cId, cliente:n, whatsapp:w, tipo:t, endereco:t==='Entrega'?`${e}, ${num}`:'', pagamento:p, itens, total:subtotalValor, status:'Pendente', timestamp:Date.now()});
+        
+        db.ref('pedidos').push({comandaId:cId, cliente:n, whatsapp:w, tipo:t, endereco:t==='Entrega'?`${e}, ${num}`:'', pagamento:p, itens: itens, total:subtotalValor, status:'Pendente', timestamp:Date.now()});
+        
         cart={}; window.location.href=`https://api.whatsapp.com/send?phone=5515991422218&text=${encodeURIComponent(msg)}`; closeOverlay('checkout-overlay');
     }
 
@@ -953,8 +985,16 @@
     }
 
     function gerarCardComanda(p) {
-        let htmlI = ''; if(p.itens) for(let i in p.itens) htmlI+=`<div class="comanda-item"><b>${p.itens[i].qtd}x</b> ${p.itens[i].nome}</div>`;
+        let htmlI = ''; 
+        if(p.itens) {
+            const itensList = Array.isArray(p.itens) ? p.itens : Object.values(p.itens);
+            itensList.forEach(item => {
+                htmlI += `<div class="comanda-item"><b>${item.qtd}x</b> ${item.nome}</div>`;
+            });
+        }
+        
         let dStr = p.dataAgendada ? p.dataAgendada.split('-').reverse().join('/') : new Date(p.timestamp).toLocaleDateString('pt-BR');
+        
         return `
         <div class="comanda-box" style="background: ${p.status==='Cancelou'?'#ffebeb':(p.status==='Concluído'?'#ebffeb':'#fff')}; position: relative; margin-bottom: 15px;">
             <div class="comanda-header" onclick="document.getElementById('b-${p.id}').style.display=document.getElementById('b-${p.id}').style.display==='none'?'block':'none'">
@@ -969,7 +1009,7 @@
             </div>
             <div id="b-${p.id}" style="display:none; margin-top: 10px; padding-top: 10px; border-top: 1px solid #eee;">
                 <p style="font-size:12px; margin-bottom:10px;">Wpp: ${p.whatsapp}<br>End: ${p.endereco}<br>Pgto: ${p.pagamento}</p>
-                ${p.comprovante ? `<button type="button" onclick="abrirComprovante('${p.comprovante}')" style="background:#4CAF50; color:white; border:none; padding:10px; border-radius:5px; cursor:pointer; width:100%; margin-bottom:10px; font-weight:bold;">📄 Ver Comprovante</button>`:''}
+                ${p.comprovante ? `<button type="button" onclick="abrirComprovante('${p.id}')" style="background:#4CAF50; color:white; border:none; padding:10px; border-radius:5px; cursor:pointer; width:100%; margin-bottom:10px; font-weight:bold;">📄 Ver Comprovante</button>`:''}
                 <div>${htmlI}</div>
                 <select onchange="db.ref('pedidos/${p.id}').update({status:this.value})" style="width:100%; padding:10px; margin-top:10px; border-radius:8px; font-family:'Inter',sans-serif; background:#fafafa; border:1px solid #dbdbdb;">
                     <option value="Pendente" ${p.status==='Pendente'?'selected':''}>⏳ Pendente</option>
@@ -1034,47 +1074,60 @@
             </div>`;
         }
         
-        calHtml += `</div><div id="day-comandas-container" style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px;">`;
-        calHtml += `<p style="color:#8e8e8e; text-align:center; font-size:14px; margin-top: 20px;">Selecione um dia no calendário para ver as comandas agendadas.</p>`;
         calHtml += `</div>`;
-        
         listDiv.innerHTML = calHtml;
-
-        // Auto-selecionar o dia de hoje para exibir logo de cara as comandas do dia
-        const hoje = new Date();
-        const hjStr = `${hoje.getFullYear()}-${String(hoje.getMonth()+1).padStart(2,'0')}-${String(hoje.getDate()).padStart(2,'0')}`;
-        setTimeout(() => { showComandasForDay(hjStr); }, 100);
     }
 
     function changeCalMonth(m) { currentCalMonth = parseInt(m); renderCalendarAdmin(); }
     function changeCalYear(y) { currentCalYear = parseInt(y); renderCalendarAdmin(); }
 
     function showComandasForDay(dateStr) {
-        const container = document.getElementById('day-comandas-container');
+        const container = document.getElementById('day-comandas-content');
         if(!container) return;
+        
+        const isBlocked = encConfig.datasBloqueadas && encConfig.datasBloqueadas[dateStr];
         const orders = groupedComandas[dateStr] || [];
         
-        let html = `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                        <h4 style="color: var(--text-main);">Comandas de ${dateStr.split('-').reverse().join('/')}</h4>
-                    </div>`;
+        document.getElementById('day-comandas-title').innerText = `📅 ${dateStr.split('-').reverse().join('/')}`;
+        
+        let html = '';
+
+        if(isBlocked) {
+            html += `<div style="background:#ffebeb; color:#ed4956; padding:10px; border-radius:8px; margin-bottom:15px; font-size:13px; text-align:center; border: 1px solid #ed4956;">
+                <b>Data Bloqueada</b><br>Nenhuma encomenda nova pode ser feita neste dia.
+                <button onclick="desbloquearDataPopup('${dateStr}')" style="margin-top:8px; background:#ed4956; color:white; border:none; padding:8px; border-radius:5px; width:100%; font-weight:bold; cursor:pointer;">Liberar Data (Desbloquear)</button>
+            </div>`;
+        }
 
         if(orders.length === 0) {
-            html += `<p style="color:#8e8e8e; text-align:center; font-size:14px;">Nenhuma comanda para essa data.</p>`;
+            html += `<p style="color:#8e8e8e; text-align:center; font-size:14px; margin-top:10px;">Nenhuma comanda para essa data.</p>`;
         } else {
             orders.forEach(p => { html += gerarCardComanda(p); });
         }
+        
         container.innerHTML = html;
-        container.scrollIntoView({behavior: "smooth", block: "nearest"});
+        document.getElementById('day-comandas-overlay').style.display = 'flex';
+    }
+
+    function desbloquearDataPopup(dateStr) {
+        desbloquearData(dateStr);
+        showInstaModal('Sucesso', 'A data foi liberada para novas encomendas!', '✅');
+        closeOverlay('day-comandas-overlay');
     }
 
     function confirmDeletePedido(id, dataAgendada) {
         showInstaModal('Excluir Comanda?', 'Tem certeza que deseja apagar?', '🗑️', 'confirm', () => {
             db.ref('pedidos/'+id).remove();
+            closeOverlay('day-comandas-overlay'); 
             renderCalendarAdmin();
         });
     }
 
-    function abrirComprovante(b64) {
+    function abrirComprovante(id) {
+        const comanda = comandas.find(c => c.id === id);
+        if(!comanda || !comanda.comprovante) return;
+        const b64 = comanda.comprovante;
+        
         const sl = document.getElementById('modal-slider'); sl.innerHTML = '';
         if(b64.startsWith('data:application/pdf')) {
             const emb = document.createElement('embed');
@@ -1110,7 +1163,6 @@
         if(isAdmin) {
             document.getElementById('cfg-margem-pct').value = encConfig.margemPct || '';
             renderTabelaIngredientesAdmin();
-            renderDatasBloqueadasAdmin();
         }
     });
 
@@ -1128,15 +1180,6 @@
             }
         }
         con.innerHTML = html + '</table>';
-    }
-
-    function renderDatasBloqueadasAdmin() {
-        const con = document.getElementById('admin-datas-bloqueadas'); con.innerHTML = '';
-        for(let d in encConfig.datasBloqueadas) {
-            const btn = document.createElement('div'); btn.style.cssText = "background:#ffebeb; color:#ed4956; padding:5px 10px; border-radius:15px; border:1px solid #ed4956; font-size:12px; display:flex; align-items:center; gap:5px;";
-            btn.innerHTML = `<span>${d}</span> <b style="cursor:pointer;" onclick="desbloquearData('${d}')">X</b>`;
-            con.appendChild(btn);
-        }
     }
 
     function salvarConfigEncomendaGeral() {
@@ -1386,9 +1429,9 @@
         const detalhesParaFirebase = {
             comandaId: cId, cliente: n, whatsapp: w, tipo: 'Encomenda (' + t + ')',
             endereco: t === 'Entrega' ? e : '', pagamento: 'PIX (50%)', total: encTotalAtual,
-            itens: { 
-                "bolo_custom": { nome: `Bolo ${encData.peso}kg (${encData.massa}, ${encData.recheio})`, qtd: 1, preco: formatPrice(encTotalAtual) }
-            },
+            itens: [ 
+                { nome: `Bolo ${encData.peso}kg (${encData.massa}, ${encData.recheio})`, qtd: 1, preco: formatPrice(encTotalAtual) }
+            ],
             dataAgendada: d, horaAgendada: h, comprovante: encData.comprovante, status: 'Pendente', timestamp: Date.now()
         };
 
