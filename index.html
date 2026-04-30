@@ -43,13 +43,16 @@
             100% { transform: scale(1); opacity: 1; } 
         }
 
-        /* ================= TELA DE LOADING ================= */
-        #loading-screen {
+        /* ================= TELAS DE LOADING ================= */
+        #loading-screen, #payment-validation-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #050505; z-index: 999999;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             color: white; transition: opacity 0.5s ease-out;
         }
+        
+        #payment-validation-screen { display: none; z-index: 9999999; text-align: center; padding: 20px;}
+
         .modern-icon {
             width: 70px; height: 70px; margin-bottom: 25px;
             animation: pulseGlow 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
@@ -60,6 +63,24 @@
             to { transform: scale(1.1); opacity: 1; }
         }
         .loading-text { font-family: 'Grand Hotel', cursive; font-size: 36px; letter-spacing: 2px; }
+        
+        .val-text-sub { font-family: 'Inter', sans-serif; font-size: 14px; color: #8e8e8e; margin-top: 10px; max-width: 280px;}
+
+        .success-checkmark {
+            width: 80px; height: 80px; margin-bottom: 20px; display: none;
+            border-radius: 50%; background: #4CAF50; color: white; font-size: 40px;
+            line-height: 80px; text-align: center; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 30px rgba(76, 175, 80, 0.4);
+        }
+
+        .btn-finalizar-val {
+            display: none; background: var(--insta-gradient); color: var(--header-text);
+            border: none; width: 100%; max-width: 280px; padding: 16px; border-radius: 30px;
+            font-weight: 700; font-size: 16px; margin-top: 30px; cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3); transition: transform 0.2s;
+            animation: fadeUp 0.5s ease forwards;
+        }
+        .btn-finalizar-val:active { transform: scale(0.95); }
 
         /* ================= TELA INICIAL ================= */
         #home-screen { display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background: var(--insta-gradient); padding: 20px; }
@@ -310,6 +331,18 @@
         <path d="M17 4h.01"></path>
     </svg>
     <div class="loading-text" id="loading-text-dyn">Carregando...</div>
+</div>
+
+<div id="payment-validation-screen">
+    <svg id="val-spinner" class="modern-icon" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12a9 9 0 1 1-6.219-8.56"></path>
+    </svg>
+    <div id="val-icon-success" class="success-checkmark">✓</div>
+    
+    <div class="loading-text" id="val-text" style="font-size: 28px;">Validando Pagamento...</div>
+    <div class="val-text-sub" id="val-subtext">Aguarde um momento, estamos confirmando com o banco.</div>
+    
+    <button class="btn-finalizar-val" id="btn-finalizar-zap" onclick="executarFinalizacaoZap()">FINALIZAR NO WHATSAPP</button>
 </div>
 
 <div id="insta-modal-overlay" class="insta-overlay">
@@ -701,43 +734,88 @@
 
     let skipHomeTransition = false;
 
-    // Verificação Automática do Mercado Pago ao carregar a página
+    // Verificação Automática do Mercado Pago ao carregar a página com Polling
     window.addEventListener('load', () => {
         const urlParams = new URLSearchParams(window.location.search);
-        const status = urlParams.get('collection_status');
-        const hasTempData = localStorage.getItem('tempEncData'); // Verifica se há uma encomenda salva pendente
+        const paymentId = urlParams.get('payment_id') || urlParams.get('collection_id');
+        const hasTempData = localStorage.getItem('tempEncData'); 
         
-        if (status === 'approved') {
+        if (paymentId && hasTempData) {
             skipHomeTransition = true;
-            document.getElementById('loading-text-dyn').innerText = "Aprovando...";
-            setTimeout(() => {
-                recuperarEFinalizarPedidoMP();
-            }, 1000);
-        } else if (status) {
-            skipHomeTransition = true; // Impede que o timer padrao jogue pra home
+            navTo('encomendas', true);
+            restaurarEstadoEncomenda();
+            currentStepIdx = 6;
+            atualizarUIEtapas();
             
-            navTo('encomendas', true); // Vai para tela de encomendas sem resetar os dados
-            
-            if(restaurarEstadoEncomenda()) {
-                currentStepIdx = 6; // Pula cirurgicamente para a etapa 7 (indice 6 - Pagamento)
-                atualizarUIEtapas();
-            }
-
-            showInstaModal('Aviso', 'O pagamento pelo Mercado Pago não foi concluído ou ainda está pendente.', '⚠️');
+            iniciarValidacaoPagamento(paymentId);
             // Limpa a URL sem dar refresh
             window.history.replaceState({}, document.title, window.location.pathname);
+            
         } else if (hasTempData) {
-            // RECUPERAÇÃO AUTOMÁTICA: O navegador recarregou enquanto a pessoa estava pagando ou se ela apertou F5
-            skipHomeTransition = true; // Previne ir para a tela Home
-            
-            navTo('encomendas', true); // Prepara a tela de encomendas (no modo restauração)
-            
+            // RECUPERAÇÃO AUTOMÁTICA
+            skipHomeTransition = true;
+            navTo('encomendas', true);
             if(restaurarEstadoEncomenda()) {
-                currentStepIdx = 6; // Volta exatamente para a etapa de pagamento
+                currentStepIdx = 6; 
                 atualizarUIEtapas();
             }
         }
     });
+
+    async function iniciarValidacaoPagamento(paymentId) {
+        document.getElementById('payment-validation-screen').style.display = 'flex';
+        
+        // CUIDADO: Este é o seu token de produção do MP. Mantido aqui conforme o escopo da sua aplicação.
+        const token = "APP_USR-492975771390927-043013-9e07faa7f6b49f56b1a945784258a057-1370551812";
+        let tentativas = 0;
+        const maxTentativas = 20; // Aproximadamente 1 minuto checando (3 em 3s)
+
+        const checkStatus = async () => {
+            try {
+                const res = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
+                    headers: { "Authorization": `Bearer ${token}` }
+                });
+                const data = await res.json();
+
+                if (data.status === 'approved') {
+                    clearInterval(pollingInterval);
+                    mostrarSucessoPagamento();
+                } else if (data.status === 'rejected' || data.status === 'cancelled') {
+                    clearInterval(pollingInterval);
+                    document.getElementById('payment-validation-screen').style.display = 'none';
+                    showInstaModal('Aviso', 'O pagamento foi recusado ou cancelado pelo banco.', '❌');
+                }
+                // Se for in_process ou pending, a função apenas continua tentando no próximo ciclo.
+            } catch (e) {
+                console.error("Erro ao checar status", e);
+            }
+
+            tentativas++;
+            if (tentativas >= maxTentativas) {
+                clearInterval(pollingInterval);
+                document.getElementById('payment-validation-screen').style.display = 'none';
+                showInstaModal('Tempo Esgotado', 'O pagamento ainda está pendente ou não conseguimos confirmar a tempo. Se você já pagou, contate-nos no WhatsApp com o comprovante.', '⚠️');
+            }
+        };
+
+        // Faz a primeira checagem imediatamente
+        await checkStatus();
+        // Se não foi concluído na primeira, continua checando
+        const pollingInterval = setInterval(checkStatus, 3000);
+    }
+
+    function mostrarSucessoPagamento() {
+        document.getElementById('val-spinner').style.display = 'none';
+        document.getElementById('val-icon-success').style.display = 'block';
+        document.getElementById('val-text').innerText = 'Pagamento Aprovado!';
+        document.getElementById('val-subtext').innerText = 'Tudo certo com o seu sinal. Finalize o pedido abaixo.';
+        document.getElementById('btn-finalizar-zap').style.display = 'block';
+    }
+
+    function executarFinalizacaoZap() {
+        document.getElementById('payment-validation-screen').style.display = 'none';
+        recuperarEFinalizarPedidoMP();
+    }
 
     // Banco de Versículos (ONBV)
     const versiculosONBV = [
@@ -1006,7 +1084,6 @@
     db.ref('cardapio').on('value', (snap) => {
         menuItems = []; snap.forEach(c => { menuItems.push({ id: c.key, ...c.val() }); });
         
-        // CORREÇÃO: Garante que o sort não vai gerar um NaN e travar a lista
         const getStVal = (s) => ({"Novo":1,"Disponível":2,"Esgotado":3}[s] || 2);
         menuItems.sort((a,b) => getStVal(a.status) - getStVal(b.status));
         
@@ -1149,7 +1226,6 @@
                 htmlI += `<div class="comanda-item" style="display:flex; flex-direction:column; align-items:flex-start;">
                     <div><b>${item.qtd}x</b> ${item.nome}</div>`;
                 
-                // CORREÇÃO: Mostrando todos os detalhes da encomenda completinhos
                 if(item.massa) {
                     htmlI += `<div style="font-size:12px; color:#666; margin-top:4px;">
                         <b>Massa:</b> ${item.massa} | <b>Recheio:</b> ${item.recheio}<br>
@@ -1290,12 +1366,9 @@
     function confirmDeletePedido(id, dataAgendada) {
         showInstaModal('Excluir Comanda?', 'Tem certeza que deseja apagar?', '🗑️', 'confirm', () => {
             db.ref('pedidos/'+id).remove();
-            
-            // Se a comanda tinha uma data vinculada, remove o bloqueio dela também
             if (dataAgendada && dataAgendada !== 'undefined' && dataAgendada !== 'null') {
                 db.ref('config_encomendas/datasBloqueadas/' + dataAgendada).remove();
             }
-            
             closeOverlay('day-comandas-overlay'); 
             renderCalendarAdmin();
         });
@@ -1422,7 +1495,6 @@
     function desbloquearData(dataStr) { db.ref(`config_encomendas/datasBloqueadas/${dataStr}`).remove(); }
 
     function iniciarEncomendaFlow() {
-        // AJUSTE: Limpar dados pendentes antigos se a pessoa desistiu e está iniciando um pedido novo do zero
         localStorage.removeItem('tempEncData');
         localStorage.removeItem('tempEncTotal');
         localStorage.removeItem('tempEncNome');
@@ -1464,7 +1536,6 @@
             if(document.getElementById('enc_tipo').value === 'Entrega' && !document.getElementById('enc_end').value) return showInstaModal('Aviso', "Preencha o endereço.", '⚠️');
         }
         if(s==='pagamento') {
-            // Se chegou no final sem pagar, exibe um alerta
             return showInstaModal('Atenção', 'Você precisa gerar e pagar o sinal de 50% através do Mercado Pago para concluir a sua reserva.', '💳');
         }
 
@@ -1528,7 +1599,6 @@
             encData = JSON.parse(savedData);
             encTotalAtual = parseFloat(localStorage.getItem('tempEncTotal'));
 
-            // Restaura os inputs visuais
             document.getElementById('enc_nome').value = localStorage.getItem('tempEncNome') || '';
             document.getElementById('enc_tipo').value = localStorage.getItem('tempEncTipo') || 'Retirada';
             document.getElementById('enc_end').value = localStorage.getItem('tempEncEnd') || '';
@@ -1539,7 +1609,6 @@
                 document.getElementById('enc_end_box').style.display = 'block';
             }
 
-            // Restaura a selecao dos botoes de peso
             document.querySelectorAll('input[name="enc_peso"]').forEach(r => {
                 if(r.value === String(encData.peso)) {
                     r.checked = true;
@@ -1549,7 +1618,6 @@
                 }
             });
 
-            // Restaura visualmente os valores recuperados para evitar que zerem antes do Firebase conectar
             document.getElementById('enc-total-display').innerText = formatPrice(encTotalAtual);
             document.getElementById('enc-sinal-display').innerText = formatPrice(encTotalAtual / 2);
 
@@ -1587,7 +1655,7 @@
 
     let encTotalAtual = 0;
     function calcularTotalEncomenda() {
-        if (!encConfig.ingredientes || Object.keys(encConfig.ingredientes.massa).length === 0) return; // Evita zerar enquanto o firebase carrega
+        if (!encConfig.ingredientes || Object.keys(encConfig.ingredientes.massa).length === 0) return; 
         
         let totalIng = 0;
         const p = String(encData.peso);
@@ -1619,7 +1687,6 @@
         const sinal = encTotalAtual / 2;
         const token = "APP_USR-492975771390927-043013-9e07faa7f6b49f56b1a945784258a057-1370551812";
         
-        // Salva os dados no localStorage para recuperar quando a pessoa voltar do pagamento
         localStorage.setItem('tempEncData', JSON.stringify(encData));
         localStorage.setItem('tempEncTotal', encTotalAtual);
         localStorage.setItem('tempEncNome', document.getElementById('enc_nome').value);
@@ -1654,21 +1721,20 @@
             
             const data = await res.json();
             if(data.init_point) {
-                // Redireciona o usuário para pagar
                 window.location.href = data.init_point;
             } else {
                 showInstaModal("Erro MP", "Não foi possível gerar o link do Mercado Pago.", "❌");
                 document.getElementById('txt-mp').innerText = "Pagar Sinal Agora";
             }
         } catch(e) {
-            showInstaModal("Erro", "Falha de conexão com a API do Mercado Pago. (Isso pode ser um bloqueio de segurança CORS do navegador).", "❌");
+            showInstaModal("Erro", "Falha de conexão com a API do Mercado Pago.", "❌");
             document.getElementById('txt-mp').innerText = "Pagar Sinal Agora";
         }
     }
 
     function recuperarEFinalizarPedidoMP() {
         const savedData = localStorage.getItem('tempEncData');
-        if(!savedData) return; // Nenhuma encomenda pendente salva no localStorage
+        if(!savedData) return; 
 
         const encDataRecuperada = JSON.parse(savedData);
         const encTotalRecuperado = parseFloat(localStorage.getItem('tempEncTotal'));
@@ -1711,7 +1777,6 @@
         };
 
         db.ref('pedidos').push(detalhesParaFirebase).then(() => {
-            // Limpa as variáveis temporárias para não duplicar envios se o cliente atualizar a página
             localStorage.removeItem('tempEncData');
             localStorage.removeItem('tempEncTotal');
             localStorage.removeItem('tempEncNome');
@@ -1720,7 +1785,6 @@
             localStorage.removeItem('tempEncDataStr');
             localStorage.removeItem('tempEncHora');
             
-            // Limpa a URL e envia pro whats
             window.history.replaceState({}, document.title, window.location.pathname);
             window.location.href = `https://api.whatsapp.com/send?phone=5515991422218&text=${encodeURIComponent(msg)}`;
         });
