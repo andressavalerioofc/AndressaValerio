@@ -853,8 +853,12 @@
     });
 
     db.ref('cardapio').on('value', (snap) => {
-        menuItems = []; snap.forEach(c => menuItems.push({ id: c.key, ...c.val() }));
-        menuItems.sort((a,b) => ({"Novo":1,"Disponível":2,"Esgotado":3}[a.status||"Disponível"]) - ({"Novo":1,"Disponível":2,"Esgotado":3}[b.status||"Disponível"]));
+        menuItems = []; snap.forEach(c => { menuItems.push({ id: c.key, ...c.val() }); });
+        
+        // CORREÇÃO: Garante que o sort não vai gerar um NaN e travar a lista
+        const getStVal = (s) => ({"Novo":1,"Disponível":2,"Esgotado":3}[s] || 2);
+        menuItems.sort((a,b) => getStVal(a.status) - getStVal(b.status));
+        
         renderMenu();
     });
 
@@ -926,20 +930,22 @@
         const con=document.getElementById('menu-container'); con.innerHTML="";
         
         menuItems.forEach(i => {
-            if(currentCategory!=='Todos' && (i.category||'Doces')!==currentCategory) return;
-            const s=i.status||'Disponível', esg=s==='Esgotado', q=cart[i.id]||0, ext=(i.estoque!==""&&i.estoque!==undefined)?` - Resta ${i.estoque}`:'';
-            let bHtml='<div class="status-badge badge-disponivel">Disponível'+ext+'</div>'; if(esg) bHtml='<div class="status-badge badge-esgotado">Esgotado</div>'; else if(s==='Novo') bHtml='<div class="status-badge badge-novo">Novo ✨'+ext+'</div>';
-            
-            const imgSrc = (i.imgs && i.imgs.length > 0) ? i.imgs[0] : (i.img || '');
-            
-            const html = `
-                ${q>0?`<div class="qty-bubble">${q}</div>`:''}
-                <div class="img-container"><img src="${imgSrc}" onclick="openImageModal('${i.id}')">${bHtml}</div>
-                <div class="card-info"><div class="card-title">${i.title}</div><div style="font-size:0.75rem; color:#8e8e8e; margin-top:4px;">${i.desc}</div><div class="card-price">${i.price}</div>
-                ${!esg&&la?`<div class="card-actions">${q>0?`<div class="btn-action minus" onclick="removeCart('${i.id}', event)">-</div>`:''}<div class="btn-action add" onclick="addCart('${i.id}', event)">+</div></div>`:''}</div>
-                ${isAdmin?`<div style="display:flex; border-top:1px solid #eee;"><button onclick="editItem('${i.id}')" style="flex:1; background:#fff; color:var(--insta-blue); border:none; padding:12px; font-weight:bold; border-right:1px solid #eee;">EDITAR</button><button onclick="deleteItem('${i.id}')" style="flex:1; background:#fff; color:#ed4956; border:none; padding:12px; font-weight:bold;">REMOVER</button></div>`:''}
-            `;
-            const card=document.createElement('div'); card.className=`card ${q>0?'selected':''} ${esg?'esgotado':''} ${!la?'loja-fechada-fx':''}`; card.innerHTML=html; con.appendChild(card);
+            try {
+                if(currentCategory!=='Todos' && (i.category||'Doces')!==currentCategory) return;
+                const s=i.status||'Disponível', esg=s==='Esgotado', q=cart[i.id]||0, ext=(i.estoque!==""&&i.estoque!==undefined)?` - Resta ${i.estoque}`:'';
+                let bHtml='<div class="status-badge badge-disponivel">Disponível'+ext+'</div>'; if(esg) bHtml='<div class="status-badge badge-esgotado">Esgotado</div>'; else if(s==='Novo') bHtml='<div class="status-badge badge-novo">Novo ✨'+ext+'</div>';
+                
+                const imgSrc = (i.imgs && i.imgs.length > 0) ? i.imgs[0] : (i.img || '');
+                
+                const html = `
+                    ${q>0?`<div class="qty-bubble">${q}</div>`:''}
+                    <div class="img-container"><img src="${imgSrc}" onclick="openImageModal('${i.id}')">${bHtml}</div>
+                    <div class="card-info"><div class="card-title">${i.title}</div><div style="font-size:0.75rem; color:#8e8e8e; margin-top:4px;">${i.desc}</div><div class="card-price">${i.price}</div>
+                    ${!esg&&la?`<div class="card-actions">${q>0?`<div class="btn-action minus" onclick="removeCart('${i.id}', event)">-</div>`:''}<div class="btn-action add" onclick="addCart('${i.id}', event)">+</div></div>`:''}</div>
+                    ${isAdmin?`<div style="display:flex; border-top:1px solid #eee;"><button onclick="editItem('${i.id}')" style="flex:1; background:#fff; color:var(--insta-blue); border:none; padding:12px; font-weight:bold; border-right:1px solid #eee;">EDITAR</button><button onclick="deleteItem('${i.id}')" style="flex:1; background:#fff; color:#ed4956; border:none; padding:12px; font-weight:bold;">REMOVER</button></div>`:''}
+                `;
+                const card=document.createElement('div'); card.className=`card ${q>0?'selected':''} ${esg?'esgotado':''} ${!la?'loja-fechada-fx':''}`; card.innerHTML=html; con.appendChild(card);
+            } catch(e) { console.error("Erro renderizando item", e); }
         }); 
         atualizarTotalFlutuante();
     }
@@ -989,7 +995,17 @@
         if(p.itens) {
             const itensList = Array.isArray(p.itens) ? p.itens : Object.values(p.itens);
             itensList.forEach(item => {
-                htmlI += `<div class="comanda-item"><b>${item.qtd}x</b> ${item.nome}</div>`;
+                htmlI += `<div class="comanda-item" style="display:flex; flex-direction:column; align-items:flex-start;">
+                    <div><b>${item.qtd}x</b> ${item.nome}</div>`;
+                
+                // CORREÇÃO: Mostrando todos os detalhes da encomenda completinhos
+                if(item.massa) {
+                    htmlI += `<div style="font-size:12px; color:#666; margin-top:4px;">
+                        <b>Massa:</b> ${item.massa} | <b>Recheio:</b> ${item.recheio}<br>
+                        <b>Cob:</b> ${item.cobertura} | <b>Adic:</b> ${item.adicional}
+                    </div>`;
+                }
+                htmlI += `</div>`;
             });
         }
         
@@ -999,7 +1015,7 @@
         <div class="comanda-box" style="background: ${p.status==='Cancelou'?'#ffebeb':(p.status==='Concluído'?'#ebffeb':'#fff')}; position: relative; margin-bottom: 15px;">
             <div class="comanda-header" onclick="document.getElementById('b-${p.id}').style.display=document.getElementById('b-${p.id}').style.display==='none'?'block':'none'">
                 <div style="flex:1;">
-                    <strong style="color:var(--insta-blue);">${p.comandaId}</strong><br>${p.cliente} <span style="font-size:10px;">(${p.tipo})</span>
+                    <strong style="color:var(--insta-blue);">${p.comandaId}</strong><br>${p.cliente}
                     <div style="font-size:11px; color:#888; margin-top:3px;">📅 ${dStr}</div>
                 </div>
                 <b>${formatPrice(p.total||0)}</b>
@@ -1008,7 +1024,12 @@
                 <button class="btn-comanda-acao" style="background:#ed4956" onclick="confirmDeletePedido('${p.id}', '${p.dataAgendada}')">🗑️</button>
             </div>
             <div id="b-${p.id}" style="display:none; margin-top: 10px; padding-top: 10px; border-top: 1px solid #eee;">
-                <p style="font-size:12px; margin-bottom:10px;">Wpp: ${p.whatsapp}<br>End: ${p.endereco}<br>Pgto: ${p.pagamento}</p>
+                <p style="font-size:12px; margin-bottom:10px;">
+                    <span style="display:inline-block; background:var(--insta-blue); color:#fff; padding:2px 6px; border-radius:4px; font-weight:bold; margin-bottom:5px;">${p.tipo}</span><br>
+                    <b>Wpp:</b> ${p.whatsapp}<br>
+                    ${p.endereco ? `<b>End:</b> ${p.endereco}<br>` : ''}
+                    <b>Pgto:</b> ${p.pagamento}
+                </p>
                 ${p.comprovante ? `<button type="button" onclick="abrirComprovante('${p.id}')" style="background:#4CAF50; color:white; border:none; padding:10px; border-radius:5px; cursor:pointer; width:100%; margin-bottom:10px; font-weight:bold;">📄 Ver Comprovante</button>`:''}
                 <div>${htmlI}</div>
                 <select onchange="db.ref('pedidos/${p.id}').update({status:this.value})" style="width:100%; padding:10px; margin-top:10px; border-radius:8px; font-family:'Inter',sans-serif; background:#fafafa; border:1px solid #dbdbdb;">
@@ -1115,9 +1136,16 @@
         closeOverlay('day-comandas-overlay');
     }
 
+    // CORREÇÃO: Desbloqueando a data automaticamente ao excluir a comanda
     function confirmDeletePedido(id, dataAgendada) {
         showInstaModal('Excluir Comanda?', 'Tem certeza que deseja apagar?', '🗑️', 'confirm', () => {
             db.ref('pedidos/'+id).remove();
+            
+            // Se a comanda tinha uma data vinculada, remove o bloqueio dela também
+            if (dataAgendada && dataAgendada !== 'undefined' && dataAgendada !== 'null') {
+                db.ref('config_encomendas/datasBloqueadas/' + dataAgendada).remove();
+            }
+            
             closeOverlay('day-comandas-overlay'); 
             renderCalendarAdmin();
         });
@@ -1426,11 +1454,20 @@
         msg += `*🧾 VALORES:*\nTotal: ${formatPrice(encTotalAtual)}\nSinal Pago (50%): ${formatPrice(encTotalAtual/2)}\n\n`;
         msg += `*O comprovante foi salvo no App e anexado à sua comanda!* Aguardo a confirmação do pedido!`;
 
+        // CORREÇÃO: Enviando todos os detalhes individualmente para salvar no banco
         const detalhesParaFirebase = {
             comandaId: cId, cliente: n, whatsapp: w, tipo: 'Encomenda (' + t + ')',
             endereco: t === 'Entrega' ? e : '', pagamento: 'PIX (50%)', total: encTotalAtual,
             itens: [ 
-                { nome: `Bolo ${encData.peso}kg (${encData.massa}, ${encData.recheio})`, qtd: 1, preco: formatPrice(encTotalAtual) }
+                { 
+                    nome: `Bolo ${encData.peso}kg`, 
+                    massa: encData.massa, 
+                    recheio: encData.recheio, 
+                    cobertura: encData.cobertura || 'Nenhum', 
+                    adicional: encData.adicional || 'Nenhum', 
+                    qtd: 1, 
+                    preco: formatPrice(encTotalAtual) 
+                }
             ],
             dataAgendada: d, horaAgendada: h, comprovante: encData.comprovante, status: 'Pendente', timestamp: Date.now()
         };
