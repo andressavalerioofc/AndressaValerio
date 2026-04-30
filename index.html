@@ -705,6 +705,7 @@
     window.addEventListener('load', () => {
         const urlParams = new URLSearchParams(window.location.search);
         const status = urlParams.get('collection_status');
+        const hasTempData = localStorage.getItem('tempEncData'); // Verifica se há uma encomenda salva pendente
         
         if (status === 'approved') {
             skipHomeTransition = true;
@@ -714,7 +715,6 @@
             }, 1000);
         } else if (status) {
             skipHomeTransition = true; // Impede que o timer padrao jogue pra home
-            document.getElementById('loading-screen').style.display = 'none';
             
             navTo('encomendas', true); // Vai para tela de encomendas sem resetar os dados
             
@@ -726,6 +726,16 @@
             showInstaModal('Aviso', 'O pagamento pelo Mercado Pago não foi concluído ou ainda está pendente.', '⚠️');
             // Limpa a URL sem dar refresh
             window.history.replaceState({}, document.title, window.location.pathname);
+        } else if (hasTempData) {
+            // RECUPERAÇÃO AUTOMÁTICA: O navegador recarregou enquanto a pessoa estava pagando ou se ela apertou F5
+            skipHomeTransition = true; // Previne ir para a tela Home
+            
+            navTo('encomendas', true); // Prepara a tela de encomendas (no modo restauração)
+            
+            if(restaurarEstadoEncomenda()) {
+                currentStepIdx = 6; // Volta exatamente para a etapa de pagamento
+                atualizarUIEtapas();
+            }
         }
     });
 
@@ -1277,7 +1287,6 @@
         closeOverlay('day-comandas-overlay');
     }
 
-    // CORREÇÃO: Desbloqueando a data automaticamente ao excluir a comanda
     function confirmDeletePedido(id, dataAgendada) {
         showInstaModal('Excluir Comanda?', 'Tem certeza que deseja apagar?', '🗑️', 'confirm', () => {
             db.ref('pedidos/'+id).remove();
@@ -1413,6 +1422,15 @@
     function desbloquearData(dataStr) { db.ref(`config_encomendas/datasBloqueadas/${dataStr}`).remove(); }
 
     function iniciarEncomendaFlow() {
+        // AJUSTE: Limpar dados pendentes antigos se a pessoa desistiu e está iniciando um pedido novo do zero
+        localStorage.removeItem('tempEncData');
+        localStorage.removeItem('tempEncTotal');
+        localStorage.removeItem('tempEncNome');
+        localStorage.removeItem('tempEncTipo');
+        localStorage.removeItem('tempEncEnd');
+        localStorage.removeItem('tempEncDataStr');
+        localStorage.removeItem('tempEncHora');
+
         currentStepIdx = 0; encData = { peso: "1", massa: null, recheio: null, cobertura: null, adicional: null, comprovante: null };
         document.querySelectorAll('input[name="enc_peso"]').forEach(r => { if(r.value==="1") { r.checked=true; r.parentElement.classList.add('selected'); } else r.parentElement.classList.remove('selected'); });
         
