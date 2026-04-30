@@ -72,6 +72,59 @@
         .btn-home:nth-child(5) { animation-delay: 0.3s; }
         .btn-home:active { transform: scale(0.92); }
 
+        /* Versículo do Dia */
+        .versiculo-box {
+            background: #ffffff;
+            width: 100%;
+            max-width: 280px;
+            padding: 20px;
+            border-radius: 20px;
+            margin-top: 35px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            animation: fadeUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+            animation-delay: 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+        .versiculo-box::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 5px;
+            background: var(--insta-gradient);
+        }
+        .versiculo-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .versiculo-title svg {
+            color: var(--insta-blue);
+        }
+        .versiculo-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-style: italic;
+            font-weight: 600;
+            color: #555;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        .versiculo-ref {
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--insta-blue);
+        }
+
         /* ================= BOTÕES FLUTUANTES ================= */
         .btn-voltar-float { position: fixed; bottom: 95px; right: 20px; width: 55px; height: 55px; border-radius: 50%; background: var(--insta-gradient); color: var(--header-text); border: none; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 15px rgba(0,0,0,0.25); cursor: pointer; z-index: 9999; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s; }
         .btn-voltar-float:active { transform: scale(0.85); box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
@@ -171,7 +224,7 @@
         .btn-insta-link { background: none; border: none; color: var(--text-secondary); font-weight: bold; padding: 10px; width: 100%; font-size: 0.9rem; cursor: pointer;}
         .btn-danger { background: #ed4956 !important; color: white !important; border: none !important; }
         
-        #insta-modal-overlay { z-index: 1000005 !important; } /* Aumentado para não ficar atrás do popup do dia */
+        #insta-modal-overlay { z-index: 1000005 !important; }
 
         #img-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000010 !important; flex-direction: column; justify-content: center; align-items: center; }
         .modal-close { position: absolute; top: 20px; right: 20px; color: white; font-size: 32px; font-weight: bold; cursor: pointer; z-index: 2001; }
@@ -290,6 +343,8 @@
     <button class="btn-home" onclick="navTo('produtos')">Delivery</button>
     <button class="btn-home" onclick="navTo('encomendas')">Encomendas</button>
     <button class="btn-home" onclick="window.location.href='https://share.google/V5mK11fYc07tWWEqM'">Avaliação</button>
+    
+    <div id="word-of-the-day" class="versiculo-box"></div>
 </div>
 
 <div id="produtos-screen">
@@ -319,7 +374,7 @@
         <div class="insta-popup">
             <div style="font-weight: 800; font-size: 1.2rem; margin-bottom: 10px;">Seu WhatsApp</div>
             <p style="font-size: 0.9rem; color: #8e8e8e; margin-bottom: 15px;">Digite seu número para facilitar seus pedidos (com DDD).</p>
-            <input type="tel" id="user-whats-input" placeholder="(11) 99999-9999">
+            <input type="tel" id="user-whats-input" placeholder="(15) 99999-9999">
             <button class="btn-insta-blue" onclick="salvarWhatsLocal()">Acessar Loja</button>
         </div>
     </div>
@@ -327,7 +382,7 @@
     <div id="whats-config-overlay" class="insta-overlay">
         <div class="insta-popup">
             <div style="font-weight: 800; font-size: 1.2rem; margin-bottom: 10px;">Editar WhatsApp</div>
-            <input type="tel" id="edit-whats-input" placeholder="(11) 99999-9999">
+            <input type="tel" id="edit-whats-input" placeholder="(15) 99999-9999">
             <button class="btn-insta-blue" onclick="atualizarWhatsLocal()">Salvar</button>
             <button class="btn-insta-link" onclick="closeOverlay('whats-config-overlay')">Cancelar</button>
         </div>
@@ -438,7 +493,7 @@
         <div class="admin-box">
             <h3 style="margin-bottom: 15px; font-size: 16px; color: var(--insta-blue);">⚙️ Configurações da Loja</h3>
             <label style="font-size:12px; font-weight:bold; color:#555;">Nome do App/Loja</label>
-            <input type="text" id="cfg-nome-loja" placeholder="Ex: Dessa's Cake" style="margin-bottom: 15px;">
+            <input type="text" id="cfg-nome-loja" placeholder="Ex: Dessa's Food" style="margin-bottom: 15px;">
             
             <label style="font-size:12px; font-weight:bold; color:#555;">Subtítulo (Opcional)</label>
             <input type="text" id="cfg-subtitulo" placeholder="Ex: A melhor confeitaria da região" style="margin-bottom: 15px;">
@@ -646,6 +701,62 @@
     if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
     const db = firebase.database();
 
+    // Banco de Versículos (ONBV)
+    const versiculosONBV = [
+        { text: "Confie no Senhor de todo o seu coração e não se apoie em seu próprio entendimento.", ref: "Provérbios 3:5" },
+        { text: "Tudo posso naquele que me fortalece.", ref: "Filipenses 4:13" },
+        { text: "Entregue o seu caminho ao Senhor; confie nele, e ele agirá.", ref: "Salmos 37:5" },
+        { text: "O Senhor é o meu pastor; nada me faltará.", ref: "Salmos 23:1" },
+        { text: "Sejam fortes e corajosos. Não tenham medo nem fiquem apavorados...", ref: "Deuteronômio 31:6" },
+        { text: "Deixo a paz a vocês; a minha paz dou a vocês...", ref: "João 14:27" },
+        { text: "O amor é paciente, o amor é bondoso...", ref: "1 Coríntios 13:4" },
+        { text: "Porque sou eu que conheço os planos que tenho para vocês...", ref: "Jeremias 29:11" },
+        { text: "O Senhor te abençoe e te guarde...", ref: "Números 6:24" },
+        { text: "Mas os que esperam no Senhor renovarão as suas forças...", ref: "Isaías 40:31" },
+        { text: "Não andem ansiosos por coisa alguma...", ref: "Filipenses 4:6" },
+        { text: "O choro pode durar uma noite, mas a alegria vem pela manhã.", ref: "Salmos 30:5" },
+        { text: "Deus é o nosso refúgio e a nossa fortaleza...", ref: "Salmos 46:1" },
+        { text: "Peçam, e será dado; busquem, e encontrarão...", ref: "Mateus 7:7" },
+        { text: "Alegrem-se na esperança, sejam pacientes na tribulação, perseverem na oração.", ref: "Romanos 12:12" },
+        { text: "Lancem sobre ele toda a sua ansiedade, porque ele tem cuidado de vocês.", ref: "1 Pedro 5:7" },
+        { text: "O meu Deus suprirá todas as necessidades de vocês...", ref: "Filipenses 4:19" },
+        { text: "A resposta calma desvia a fúria, mas a palavra ríspida desperta a ira.", ref: "Provérbios 15:1" },
+        { text: "Ensina-nos a contar os nossos dias para que o nosso coração alcance sabedoria.", ref: "Salmos 90:12" },
+        { text: "Este é o dia em que o Senhor agiu; alegremo-nos e exultemos neste dia.", ref: "Salmos 118:24" },
+        { text: "Consagre ao Senhor tudo o que você faz, e os seus planos serão bem-sucedidos.", ref: "Provérbios 16:3" },
+        { text: "Porque vivemos por fé, e não pelo que vemos.", ref: "2 Coríntios 5:7" },
+        { text: "Ainda que a minha carne e o meu coração desfaleçam, Deus é a fortaleza do meu coração...", ref: "Salmos 73:26" },
+        { text: "Sabemos que Deus age em todas as coisas para o bem daqueles que o amam...", ref: "Romanos 8:28" },
+        { text: "Não fui eu que ordenei a você? Seja forte e corajoso!...", ref: "Josué 1:9" },
+        { text: "A tua palavra é lâmpada que ilumina os meus passos e luz que clareia o meu caminho.", ref: "Salmos 119:105" },
+        { text: "Cheguem perto de Deus, e ele se chegará a vocês.", ref: "Tiago 4:8" },
+        { text: "O próprio Senhor irá à sua frente e estará com você...", ref: "Deuteronômio 31:8" },
+        { text: "Porque pela graça vocês são salvos, mediante a fé...", ref: "Efésios 2:8" },
+        { text: "Deem graças ao Senhor, porque ele é bom; o seu amor dura para sempre.", ref: "Salmos 107:1" },
+        { text: "Em paz me deito e logo adormeço, pois só tu, Senhor, me fazes viver em segurança.", ref: "Salmos 4:8" }
+    ];
+
+    function exibirPalavraDoDia() {
+        const hoje = new Date();
+        const diaDoAno = Math.floor((hoje - new Date(hoje.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+        const versiculo = versiculosONBV[diaDoAno % versiculosONBV.length];
+        
+        const wordBox = document.getElementById('word-of-the-day');
+        if(wordBox) {
+            wordBox.innerHTML = `
+                <div class="versiculo-title">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                    Palavra do Dia
+                </div>
+                <div class="versiculo-text">"${versiculo.text}"</div>
+                <div class="versiculo-ref">${versiculo.ref}</div>
+            `;
+        }
+    }
+    
+    // Executar exibir a palavra do dia assim que iniciar
+    exibirPalavraDoDia();
+
     // Lógica de Tela de Carregamento Dinâmica
     let isDataLoaded = false;
     db.ref('.info/connected').on('value', snap => {
@@ -806,7 +917,7 @@
             storeConfig = snap.val();
             
             // App Name e Subtítulo Dinâmico
-            const nomeExibicao = storeConfig.nomeLoja || "Dessa's Cake";
+            const nomeExibicao = storeConfig.nomeLoja || "Dessa's Food";
             const subExibicao = storeConfig.subtitulo || "";
 
             document.getElementById('app-title').innerText = nomeExibicao + " | App";
@@ -1444,7 +1555,7 @@
         const partesData = d.split('-');
         const dataFormatada = `${partesData[2]}/${partesData[1]}/${partesData[0]}`;
 
-        const nomeLoja = storeConfig.nomeLoja || "Dessa's Cake";
+        const nomeLoja = storeConfig.nomeLoja || "Dessa's Food";
 
         let msg = `*Encomenda ${cId}*\n🎂 *${nomeLoja}*\n\n`;
         msg += `*👤 CLIENTE:*\nNome: ${n}\nTipo: ${t}\n`;
@@ -1473,7 +1584,8 @@
         };
 
         db.ref('pedidos').push(detalhesParaFirebase).then(() => {
-            db.ref('config_encomendas/datasBloqueadas/' + d).set(true);
+            // BLOQUEIO AUTOMÁTICO REMOVIDO DAQUI
+            // Para permitir comandas ilimitadas no mesmo dia sem restrição para você.
             window.location.href = `https://api.whatsapp.com/send?phone=5515991422218&text=${encodeURIComponent(msg)}`;
             navTo('home'); 
         });
